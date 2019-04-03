@@ -17,15 +17,10 @@ app.use(function(req, res, next) {
 console.log("Server started");
 io.on('connection', client =>{ 
     console.log("Client connected");
-
-    client.on('join', room => {
-        client.join(room);
-        console.log('client joined to ' + room);
-    });
 	   
 	client.on('arduinoData', event =>{ 
         db.writeData(event);
-        io.to('webclient').emit('weatherData', event);
-        console.log("Latest data sent to client");
+        io.to('webclient').emit('speed', event);
+        console.log("Data got!");
     });
 });
