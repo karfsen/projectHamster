@@ -10,20 +10,29 @@ unsigned long int lastTimeOfSend = 0;
 
 SocketIoClient webSocket;
 
-// Co treba spravit v tychto funkciach ?
+// spravil som co viem zatiaľ
 void onSocketDisconnect(const char *, size_t len)
 {
-  
+  Serial.println("Client has disconnected from the server.");
+  webSocket.begin("194.160.229.181", 1205, "/socket.io/?transport=websocket");
+  webSocket.emit("speed");
 }
 
 void onSocketConnect(const char *, size_t len)
 {
-  
+  Serial.println("Client connected to the server.");
+  webSocket.emit("speed");
 }
 
-void onGetSpeed(const char *, size_t len)
+Float onGetSpeed(const char *, size_t len)
 {
-  
+   Serial.println("Client requested onGetSpeed");
+   /*
+   tu treba spravit vzorec ktory vyrata priemernu rychlost toho točenia 
+   za poslednu sekundu(neviem jak rychlo to beha ale ak aspon 3 otočky za sekundu vie urobiť tak by to bolo dobre takto)
+   takže returnovalo by nejake obvodKolesaVcm*početotačokZaposlednusekundu
+   alebo niečo take neviem jak ten senzor funguje a čoho je schopny 
+   */
 }
 
 void setup() 
