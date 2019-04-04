@@ -1,3 +1,4 @@
+#include <SocketIoClient.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 
@@ -6,6 +7,24 @@
 
 unsigned long int lastTimeOfChange = 0;
 unsigned long int lastTimeOfSend = 0;
+
+SocketIoClient webSocket;
+
+// Co treba spravit v tychto funkciach ?
+void onSocketDisconnect(const char *, size_t len)
+{
+  
+}
+
+void onSocketConnect(const char *, size_t len)
+{
+  
+}
+
+void onGetSpeed(const char *, size_t len)
+{
+  
+}
 
 void setup() 
 {
@@ -27,6 +46,11 @@ void setup()
 
   lastTimeOfChange = lastTimeOfSend = millis();
   Serial.println("Started");
+
+  webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket"); 
+  webSocket.on("disconnect", onSocketDisconnect);
+  webSocket.on("connect", onSocketConnect);
+  webSocket.on("speed", onGetSpeed);
 }
 
 int State = 0;  // 1 or 2 last sensor
