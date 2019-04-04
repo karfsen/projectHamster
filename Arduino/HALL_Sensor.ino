@@ -14,7 +14,7 @@ SocketIoClient webSocket;
 void onSocketDisconnect(const char *, size_t len)
 {
   Serial.println("Client has disconnected from the server.");
-  webSocket.begin("194.160.229.181", 1205, "/socket.io/?transport=websocket");
+  webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket");
   webSocket.emit("speed");
 }
 
