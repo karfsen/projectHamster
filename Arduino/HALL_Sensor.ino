@@ -113,6 +113,7 @@ void loop()
     lastChangeCount = ChangeCount;
     minTimeOfChange = 100000;
   }
-  
+
+  webSocket.loop();
   delay(10);
 }
