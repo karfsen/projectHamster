@@ -1,12 +1,12 @@
-let db = require('./db');
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require("body-parser");
+const cors=require('cors');
 
 app.use(bodyParser.json());
+app.use(cors());
 
-io.set('origins', '*:*');
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With,Origin,Accept,Content-Type");
@@ -18,18 +18,15 @@ console.log("Server started");
 io.on('connection', client =>{ 
     console.log("Client connected");
 	   
-	client.on('arduinoData', event =>{ 
-        db.writeData(event);
-        io.to('webclient').emit('speed', event);
-        console.log("Data got!");
+	client.on('speed', event =>{
+        console.log("Data got!"+event); 
+        io.emit('speed', event);
     });
-});
-
 
 //TODO-DATABASE+GETDATAFROMARDUINO
 
 app.post("/senddata",(req,res,callbacksd)=>{
-    console.log("Request on /sendsteps");
+    console.log("Request on /senddata");
     //console.log(req);
     //console.log(req.body);
     callbacksd=function(status){
@@ -55,13 +52,17 @@ app.post("/senddata",(req,res,callbacksd)=>{
         con.query(insertSQL,(err)=>{
         if(err) console.log(err);
         console.log("I have inserted data to database!");
-        callbackSS(200);
+        callbacksd(200);
         });
         con.end();
     });
 });
 
+    client.on('disconnect', ()=>{
+	    console.log('Client has disconnected');
+    });
+});
 
-app.listen(1206,()=>{
+server.listen(1206,()=>{
     console.log("Sever listening on port 1206");
 });
