@@ -7,6 +7,7 @@
 
 unsigned long int lastTimeOfChange = 0;
 unsigned long int lastTimeOfSend = 0;
+unsigned long int minTimeOfChange = 1000000;
 
 SocketIoClient webSocket;
 
@@ -24,15 +25,14 @@ void onSocketConnect(const char *, size_t len)
   webSocket.emit("speed");
 }
 
-Float onGetSpeed(const char *, size_t len)
+float onGetSpeed(const char *, size_t len)
 {
    Serial.println("Client requested onGetSpeed");
-   /*
-   tu treba spravit vzorec ktory vyrata priemernu rychlost toho točenia 
-   za poslednu sekundu(neviem jak rychlo to beha ale ak aspon 3 otočky za sekundu vie urobiť tak by to bolo dobre takto)
-   takže returnovalo by nejake obvodKolesaVcm*početotačokZaposlednusekundu
-   alebo niečo take neviem jak ten senzor funguje a čoho je schopny 
-   */
+   float dlzkaImpulzu_m = 0.20;
+   float casImpulzu_sec = (float)minTimeOfChange / 1000.0;
+   float speed_m_per_sec = dlzkaImpulzu_m / casImpulzu_sec;
+   float speed_kmh = speed_m_per_sec * 3.6;
+   return speed_kmh;
 }
 
 void setup() 
@@ -64,8 +64,6 @@ void setup()
 
 int State = 0;  // 1 or 2 last sensor
 unsigned long int ChangeCount = 0, lastChangeCount = 0;
-unsigned long int minTimeOfChange = 1000000;
-
 void loop() 
 {
   unsigned long int cas = millis();
@@ -115,6 +113,7 @@ void loop()
     lastChangeCount = ChangeCount;
     minTimeOfChange = 100000;
   }
-  
+
+  webSocket.loop();
   delay(10);
 }
