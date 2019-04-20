@@ -35,6 +35,16 @@ float onGetSpeed(const char *, size_t len)
    return speed_kmh;
 }
 
+//Funkcia ktora bude posielať už data
+
+void sendData(char* output) {
+   if(WiFi.status() == WL_CONNECTED) {
+    
+     webSocket.emit("speed", output);
+     Serial.println("Data sended.");
+    }
+}
+
 void setup() 
 {
   Serial.begin(115200);
@@ -116,4 +126,8 @@ void loop()
 
   webSocket.loop();
   delay(10);
+  
+  //tu bude treba zavolať tu funkciu ktora vytvara JSON 
+  
+  
 }
