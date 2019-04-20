@@ -3,6 +3,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require("body-parser");
 const cors=require('cors');
+const mysql = require('mysql');
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -25,6 +26,12 @@ io.on('connection', client =>{
 
 //TODO-DATABASE+GETDATAFROMARDUINO
 
+
+    client.on('disconnect', ()=>{
+	    console.log('Client has disconnected');
+    });
+});
+
 app.post("/senddata",(req,res,callbacksd)=>{
     console.log("Request on /senddata");
     //console.log(req);
@@ -42,24 +49,18 @@ app.post("/senddata",(req,res,callbacksd)=>{
   });
   
   //let arduinoid=req.body.arduinoid;
-  let data=req.body.data;
-  console.log(data);
+  let distance=req.body.distance;
+  console.log(distance);
   
   con.connect((err)=>{
         if (err) console.log(err);
-        let insertSQL="INSERT INTO data(thisSessionSteps)"+
-        " VALUES("+id+","+sessionSteps+");";
+        let insertSQL="INSERT INTO data(distanceCM) values("+distance+")";
         con.query(insertSQL,(err)=>{
         if(err) console.log(err);
         console.log("I have inserted data to database!");
         callbacksd(200);
         });
         con.end();
-    });
-});
-
-    client.on('disconnect', ()=>{
-	    console.log('Client has disconnected');
     });
 });
 
