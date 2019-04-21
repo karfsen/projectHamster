@@ -32,10 +32,8 @@ io.on('connection', client =>{
     });
 });
 
-app.post("/senddata",(req,res,callbacksd)=>{
+app.get("/senddata",(req,res,callbacksd)=>{
     console.log("Request on /senddata");
-    //console.log(req);
-    //console.log(req.body);
     callbacksd=function(status){
       res.status(status).send();
     };
@@ -48,8 +46,7 @@ app.post("/senddata",(req,res,callbacksd)=>{
       port: "3307"
   });
   
-  //let arduinoid=req.body.arduinoid;
-  let distance=req.body.distance;
+  let distance=req.query.distance;
   console.log(distance);
   
   con.connect((err)=>{
@@ -64,6 +61,179 @@ app.post("/senddata",(req,res,callbacksd)=>{
     });
 });
 
+app.get("/distancetoday",(req,res,callbackdt)=>{
+    console.log("Request on /distancetoday");
+    callbackdt=function(status,result){
+      res.status(status).send(result);
+    };
+  
+    let con=mysql.createConnection({
+      host: "localhost",
+      user: "hamster",
+      password: "1605",
+      database: "hamster",
+      port: "3307"
+  });
+  
+  let day=new Date().getDate();
+  let month=new Date().getMonth();
+  let year=new Date().getFullYear();
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+
+  con.connect((err)=>{
+        if (err) console.log(err);
+        let todaydistance="SELECT sum(distanceCM) as dis from data where time >='"+year+"-"+month+"-"+day+" 00:00:00'";
+        //console.log(todaydistance);
+        con.query(todaydistance,(err,res)=>{
+        if(err) console.log(err);
+        let obj=new Object();
+        obj.distancetoday=res[0].dis;
+        callbackdt(200,obj);
+        console.log("Data sent to the client!");
+        });
+        con.end();
+    });
+});
+
+app.get("/todaylinegraph",(req,res,callbacktlg)=>{
+    console.log("Request on /todaylinegraph");
+    callbacktlg=function(status,result){
+      res.status(status).send(result);
+    };
+  
+    let con=mysql.createConnection({
+      host: "localhost",
+      user: "hamster",
+      password: "1605",
+      database: "hamster",
+      port: "3307"
+  });
+  
+  let day=new Date().getDate();
+  let month=new Date().getMonth();
+  let year=new Date().getFullYear();
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+
+  con.connect((err)=>{
+    if (err) console.log(err);
+    let todaydistance="SELECT (DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,distanceCM from data where time >='"+year+"-"+month+"-"+day+" 00:00:00'";
+    //console.log(todaydistance);
+    con.query(todaydistance,(err,res)=>{
+        if(err) console.log(err);
+        callbacktlg(200,res);
+        console.log("Data sent to the client!");
+    });
+    con.end();
+    });
+});
+
+app.get("/yesterdaylinegraph",(req,res,callbackylg)=>{
+    console.log("Request on /yesterdaylinegraph");
+    callbackylg=function(status,result){
+      res.status(status).send(result);
+    };
+  
+    let con=mysql.createConnection({
+      host: "localhost",
+      user: "hamster",
+      password: "1605",
+      database: "hamster",
+      port: "3307"
+  });
+  
+  let day=new Date().getDate()-1;
+  let month=new Date().getMonth();
+  let year=new Date().getFullYear();
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+
+  con.connect((err)=>{
+    if (err) console.log(err);
+    let todaydistance="SELECT (DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,distanceCM from data where time ='"+year+"-"+month+"-"+day+"'";
+    //console.log(todaydistance);
+    con.query(todaydistance,(err,res)=>{
+        if(err) console.log(err);
+        callbackylg(200,res);
+        console.log("Data sent to the client!");
+    });
+    con.end();
+    });
+});
+
+app.post("/newdistancegoal",(req,res,callbackng)=>{
+    console.log("Request on /newgoal !");
+    callbackng=function(status){
+        res.status(status).send();
+      };
+    
+      let con=mysql.createConnection({
+        host: "localhost",
+        user: "hamster",
+        password: "1605",
+        database: "hamster",
+        port: "3307"
+    });
+
+    let type=req.body.type;
+    let deploc=req.body.deploc;
+    let desloc=req.body.desloc;
+    let distance=req.body.distance;
+    let remaining=req.body.distance;
+
+    con.connect((err)=>{
+        if (err) console.log(err);
+        let insertSQL="INSERT INTO DistanceGoals(type,DepLoc,DesLoc,distance,remaining) values("+type+",'"+deploc+"','"+desloc+"',"+distance+","+remaining+");";
+        con.query(insertSQL,(err)=>{
+        if(err) console.log(err);
+        console.log("I have inserted new goal to database!");
+        callbackng(200);
+        });
+        con.end();
+    });
+});
+
+app.get("/showdistancegoals",(req,res,callbacksdg)=>{
+    console.log("Request on /showdistancegoals");
+    callbackysdg=function(status,result){
+      res.status(status).send(result);
+    };
+  
+    let con=mysql.createConnection({
+      host: "localhost",
+      user: "hamster",
+      password: "1605",
+      database: "hamster",
+      port: "3307"
+  });
+  con.connect((err)=>{
+    if (err) console.log(err);
+    let todaydistance="SELECT * from DistanceGoals where ";
+    //console.log(todaydistance);
+    con.query(todaydistance,(err,res)=>{
+    if(err) console.log(err);
+    let obj=new Object();
+    obj.distancetoday=res[0].dis;
+    callbackdt(200,obj);
+    console.log("Data sent to the client!");
+    });
+    con.end();
+});
+
+});
 server.listen(1206,()=>{
     console.log("Sever listening on port 1206");
 });
