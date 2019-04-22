@@ -20,7 +20,7 @@ io.on('connection', client =>{
     console.log("Client connected");
 	   
 	client.on('speed', event =>{
-        console.log("Data got!"+event); 
+        console.log("New io event speed!");
         io.emit('speed', event);
     });
 
@@ -51,7 +51,7 @@ app.get("/senddata",(req,res,callbacksd)=>{
   
   con.connect((err)=>{
         if (err) console.log(err);
-        let insertSQL="INSERT INTO data(distanceCM) values("+distance+")";
+        let insertSQL="INSERT INTO data(distanceCM) values("+distance+");";
         con.query(insertSQL,(err)=>{
         if(err) console.log(err);
         console.log("I have inserted data to database!");
@@ -76,7 +76,7 @@ app.get("/distancetoday",(req,res,callbackdt)=>{
   });
   
   let day=new Date().getDate();
-  let month=new Date().getMonth();
+  let month=new Date().getMonth()+1;
   let year=new Date().getFullYear();
 
   if(month<10)
@@ -87,13 +87,21 @@ app.get("/distancetoday",(req,res,callbackdt)=>{
 
   con.connect((err)=>{
         if (err) console.log(err);
-        let todaydistance="SELECT sum(distanceCM) as dis from data where time >='"+year+"-"+month+"-"+day+" 00:00:00'";
+        let todaydistance="SELECT sum(distanceCM) as dis from data where time >='"+year+"-"+month+"-"+day+" 00:00:00';";
         //console.log(todaydistance);
         con.query(todaydistance,(err,res)=>{
         if(err) console.log(err);
-        let obj=new Object();
-        obj.distancetoday=res[0].dis;
-        callbackdt(200,obj);
+        if(res[0].dis!=null){
+          let obj=new Object();
+          obj.distancetoday=res[0].dis;
+          callbackdt(200,obj);
+        }
+        else{
+          let obj=new Object();
+          obj.distancetoday=0;
+          callbackdt(200,obj);
+        }
+
         console.log("Data sent to the client!");
         });
         con.end();
@@ -115,8 +123,9 @@ app.get("/todaylinegraph",(req,res,callbacktlg)=>{
   });
   
   let day=new Date().getDate();
-  let month=new Date().getMonth();
+  let month=new Date().getMonth()+1;
   let year=new Date().getFullYear();
+  console.log(day+" "+month+" "+year);
 
   if(month<10)
     month="0"+month;
@@ -126,7 +135,7 @@ app.get("/todaylinegraph",(req,res,callbacktlg)=>{
 
   con.connect((err)=>{
     if (err) console.log(err);
-    let todaydistance="SELECT (DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,distanceCM from data where time >='"+year+"-"+month+"-"+day+" 00:00:00'";
+    let todaydistance="SELECT (DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,distanceCM from data where time >='"+year+"-"+month+"-"+day+" 00:00:00';";
     //console.log(todaydistance);
     con.query(todaydistance,(err,res)=>{
         if(err) console.log(err);
@@ -152,9 +161,10 @@ app.get("/yesterdaylinegraph",(req,res,callbackylg)=>{
   });
   
   let day=new Date().getDate()-1;
-  let month=new Date().getMonth();
+  let month=new Date().getMonth()+1;
   let year=new Date().getFullYear();
 
+  console.log(day+" "+month+" "+year);
   if(month<10)
     month="0"+month;
   if(day<10)
@@ -163,7 +173,7 @@ app.get("/yesterdaylinegraph",(req,res,callbackylg)=>{
 
   con.connect((err)=>{
     if (err) console.log(err);
-    let todaydistance="SELECT (DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,distanceCM from data where time ='"+year+"-"+month+"-"+day+"'";
+    let todaydistance="SELECT (DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,distanceCM from data where time ='"+year+"-"+month+"-"+day+"';";
     //console.log(todaydistance);
     con.query(todaydistance,(err,res)=>{
         if(err) console.log(err);
@@ -208,7 +218,7 @@ app.post("/newdistancegoal",(req,res,callbackng)=>{
 
 app.get("/showdistancegoals",(req,res,callbacksdg)=>{
     console.log("Request on /showdistancegoals");
-    callbackysdg=function(status,result){
+    callbacksdg=function(status,result){
       res.status(status).send(result);
     };
   
@@ -221,13 +231,11 @@ app.get("/showdistancegoals",(req,res,callbacksdg)=>{
   });
   con.connect((err)=>{
     if (err) console.log(err);
-    let todaydistance="SELECT * from DistanceGoals where ";
+    let todaydistance="SELECT * from DistanceGoals where done=0;";
     //console.log(todaydistance);
     con.query(todaydistance,(err,res)=>{
     if(err) console.log(err);
-    let obj=new Object();
-    obj.distancetoday=res[0].dis;
-    callbackdt(200,obj);
+    callbacksdg(200,res);
     console.log("Data sent to the client!");
     });
     con.end();

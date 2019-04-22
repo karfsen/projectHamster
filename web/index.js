@@ -3,6 +3,6 @@ $(document).ready(function(){
 	socket.on('connect', (data) => {
 		console.log('check',socket.connected);
 		console.log(data);
-		socket.emit("speed",data);
+		socket.emit("speed");
 	});
 })
