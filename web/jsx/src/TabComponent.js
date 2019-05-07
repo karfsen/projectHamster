@@ -2,10 +2,8 @@ import './tabstyle.css';
 import React from 'react';
 
 const Tab = props => {
-    console.log(props);
     let tabstyle=props.styleName;
-    console.log(tabstyle);
-    if(tabstyle==="active"){
+    if(tabstyle==="active" || tabstyle==="activeStat"){
         return (
             <div className={tabstyle}>
                 <div className="Tab">{props.text}</div>

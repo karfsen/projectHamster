@@ -1,56 +1,155 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
 
-@media only screen and (min-width: 800px) {
+.CreatedBy{
+    margin: 0 auto;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 7vh;
+    background-color: #000000;
+}
+
+.CreatedByMe{
+    width: auto;
+    margin-top: 3vh;
+    font-family: Roboto;
+    font-size: 1.5vmin;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #666666;
+}
+
+@media only screen and (min-width: 1024px) {
+
+    .Align{
+        width: 1024px;
+        height: 646px;
+        margin: auto;
+    }
 
     .WhiteBox {
-        margin-top: 1vw;
-        margin-right: 1vw;
-        width: 37vw;
-        height: 27vh;
+        margin-top: 16px;
+        margin-right: 16px;
+        width: 384px;
+        height: 141px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+
+    .WhiteBox2 {
+        margin-top: 16px;
+        margin-right: 16px;
+        width: 384px;
+        height: 141px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
     }
 
     .TempoBox{
-        margin-top: 1vw;
-        width: 19vw;
-        height: 27vh;
+        margin-top: 16px;
+        width: 144px;
+        height: 141px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
     }
     
     .DistanceBox{
-        margin-top: 1vw;
-        width: 95vw;
-        height: 40vh;
+        margin-top: 16px;
+        width: 944px;
+        height: 217px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
     }
 
-    .CreatedBy{
-        margin: 0 auto;
-        bottom: 0;
-        left: 0;
-        position: fixed;
-        width: 100%;
-        height: 8%;
-        background-color: #000000;
+}
+
+@media only screen and (min-width:768px) and (max-width: 1023px) {
+
+    .WhiteBox {
+        margin-top: 2vh;
+        margin-right: 2vw;
+        width: 44.7vw;
+        height: 141px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
     }
 
-    .CreatedByMe{
-        width: auto;
-        margin-top: 1.5%;
-        font-family: Roboto;
-        font-size: 2vh;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        text-align: center;
-        color: #666666;
+    .WhiteBox2 {
+        margin-top: 2vh;
+        width: 44.7vw;
+        height: 141px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
     }
+
+    .TempoBox{
+        margin-top: 2vw;
+        width: 20vw;
+        height: 205px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+    
+    .DistanceBox{
+        margin-top: 2vw;
+        margin-left: 2vw;
+        width: 69.6vw;
+        height: 205px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+
+}
+
+@media only screen and (min-width:320px) and (max-width: 767px) {
+
+    .WhiteBox {
+        margin-top: 8px;
+        width: auto;
+        height: 141px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+
+    .WhiteBox2 {
+        margin-top: 8px;
+        width: auto;
+        height: 141px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+
+    .TempoBox{
+        margin-top: 8px;
+        width: auto;
+        height: 141px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+    
+    .DistanceBox{
+        margin-top: 8px;
+        width: auto;
+        height: 217px;
+        border-radius: 4px;
+        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+        background-color: #ffffff;
+    }
+
 }

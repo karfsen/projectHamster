@@ -94,12 +94,12 @@ app.get("/distancetoday",(req,res,callbackdt)=>{
         if(res[0].dis!=null){
           let obj=new Object();
           obj.distancetoday=res[0].dis;
-          callbackdt(200,obj);
+          callbackdt(200,JSON.stringify(obj));
         }
         else{
           let obj=new Object();
           obj.distancetoday=0;
-          callbackdt(200,obj);
+          callbackdt(200,JSON.stringify(obj));
         }
 
         console.log("Data sent to the client!");
@@ -231,7 +231,7 @@ app.get("/showdistancegoals",(req,res,callbacksdg)=>{
   });
   con.connect((err)=>{
     if (err) console.log(err);
-    let todaydistance="SELECT * from DistanceGoals where done=0;";
+    let todaydistance="SELECT * from DistanceGoals";
     //console.log(todaydistance);
     con.query(todaydistance,(err,res)=>{
     if(err) console.log(err);
@@ -242,6 +242,7 @@ app.get("/showdistancegoals",(req,res,callbacksdg)=>{
 });
 
 });
+
 server.listen(1206,()=>{
     console.log("Sever listening on port 1206");
 });
