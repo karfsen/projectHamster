@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="goals.css">
+    <link rel="shortcut icon" href="img/hamster.png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> 
+    <title>Project HAMSTER</title>
+</head>
+<body>
+    
+    <div id="myModal" class="modal">
+        <div class="Align">
+            <div class="modal-content">
+                <span class="close"></span>
+                <div class="Step">Step 1 of 3</div>
+                <div>
+                    <div class="goalType">New goal type</div>
+                    <div class="selectType">Select type of task you want hamster to perform.</div>
+                    <div class="goalAlign">
+                        <div class="disGoalBox" onclick="ondisGoalSelected()">
+                            <div><img src="img/location.svg" id="img1" alt=""></div>
+                            <div>Distance goal</div>
+                        </div>
+                        <div class="charGoalBox" onclick="oncharGoalSelected()">
+                            <div><img src="img/icon-big-battery.svg" id="img2" alt=""></div>
+                            <div>Charging goal</div>
+                        </div>
+                    </div>
+                    <button class="nextButton" id="nextB" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Align">
+        <div class="Wrapper">
+                <!--<div class="burger"><img src="img/menu.svg" alt="menu"></div>-->
+                <div class="inactive" onclick="location.href = './index.html';">
+                    <div class="Tab">Home</div>
+                </div>
+                <div class="active" onclick="location.href = './goals.html';">
+                    <div class="Tab">Goals</div>
+                    <div class="Rectangle"></div>
+                </div>
+                <div class="inactiveStat" onclick="location.href = './statistics.html';">
+                    <div class="Tab">Statistics</div>
+                </div>
+                <div class="logo" onclick="location.href = './index.html';">
+                    <img src="img/group@2x.png" class="Group"  alt="PROJECT HAMSTER"/>
+                </div>
+        </div>
+        <div class="Wrapper">
+            <button id="button" >Create New Goal</button>
+            <div id="nogoals">
+                <img class="img" src="img/group-2.svg" alt="">
+                <div class="emptyquote">Hamster has no goals yet</div>
+            </div>
+            
+            <div class="CreatedBy">
+                <div class="CreatedByMe">web by Martin Krendželák, 2019</div>
+            </div>
+        </div>
+    </div>
+    <script src="goals.js"></script>
+</body>
+</html>
