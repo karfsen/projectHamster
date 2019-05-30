@@ -1,12 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" href="img/hamster.png" />
+    <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <script src="index.js"></script>
     <title>Project HAMSTER</title>
-  </head>
-  <body>
-
-  </body>
+</head>
+<body>
+    <div class="Align">
+        <div class="Wrapper">
+            <div id="burger"><img src="img/menu.svg" alt="menu"></div>
+            <div id="s1" class="active" onclick="location.href = './index.html';">
+                <div class="Tab">Home</div>
+                <div class="Rectangle"></div>
+            </div>
+            <div id="s2" class="inactive" onclick="location.href = './goals.html';">
+                <div class="Tab">Goals</div>
+            </div>
+            <div id="s3" class="inactiveStat" onclick="location.href = './statistics.html';">
+                <div class="Tab">Statistics</div>
+            </div>
+            <div class="logo" onclick="location.href = './index.html';">
+                <img src="img/group@2x.png" class="Group"  alt="PROJECT HAMSTER"/>
+            </div>
+        </div>
+        <div class="Wrapper">
+            <div class="WhiteBox">
+                <div class="Description">DISTANCE TODAY</div>
+                    <div id="todaydis"></div>
+                <div id="quote">This is like walk from home to bus stop!</div>
+            </div>
+            <div class="WhiteBox2">
+                <div class="Description">ENERGY GENERATED TODAY</div>
+                    <div id="todayen"></div>
+                <div id="quote">Can power up mp3 player for 1 second!</div>
+            </div>
+            <div class="TempoBox">
+                <div class="Description">LIVE TEMPO</div>
+            </div>
+            <div class="DistanceBox">
+                <div class="Description">DISTANCE IN CM</div>
+                <div class="graphcontainer"><canvas id="distancegraph" width="940px" height="180px"></canvas></div>
+            </div>
+            <div id="time"></div>
+            <div class="CreatedBy">
+                <div class="CreatedByMe">web by Martin Krendželák, 2019</div>
+            </div>
+        </div>
+    </div>
+    
+</body>
 </html>

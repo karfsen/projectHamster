@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="155" height="147" viewBox="0 0 155 147">
+    <g fill="none" fill-rule="evenodd">
+        <g stroke="#000" stroke-linecap="round" stroke-width="4" opacity=".5">
+            <path d="M64 139.476c35.028 12.416 48.063-10.758 48-26.432 0-11.964-9.687-20.654-14.487-33.894C91.181 61.683 78.783 47 64 47c-13.827 0-25.008 7.663-33.254 30.403C25.585 91.635 16 100.103 16 113.043c.148 12.28 8.598 38.757 48 26.433z"/>
+            <path d="M20 102.616C23.727 99.876 30.013 107 38.4 107c8.386 0 15.173-13.097 15.173-31.417S60.619 51 64.122 51c3.502 0 10.324 6.263 10.324 24.583S75.317 107 88.586 107c13.27 0 12.726-7.03 19.414-4.384M64 131v8M44 119L2 105M40 123l-30 8M88 123l26 10M84 119l38-14M56 123l4 4M68 127l4-4M36 59.09c-4.402-.362-10.397-.259-16 13.146 4-.717 7.05.205 9.151 2.764 1.25-4.607 3.533-9.91 6.849-15.91zM92 59.236c4.23-.643 10.018-.913 16 12.378-3.889-.479-6.792.65-8.708 3.386-1.404-4.61-3.835-9.865-7.292-15.764z"/>
+            <path d="M45.682 83c3.078 0 3.924 8-2.743 8-6.666 0-.335-8 2.743-8zM82.318 83c-3.078 0-3.924 8 2.743 8 6.666 0 .335-8-2.743-8z"/>
+            <path stroke-linejoin="round" d="M60 144.974c1.382-.947 2.741-2.271 4.078-3.974 1.677 1.703 2.984 3.027 3.922 3.974-2.25 0-6.247.059-8 0z"/>
+        </g>
+        <text fill="#000" fill-opacity=".5" font-family="Roboto-Bold, Roboto" font-size="27" font-weight="bold" transform="translate(0 -1)">
+            <tspan x="107.32" y="48">Z</tspan>
+        </text>
+        <text fill="#000" fill-opacity=".5" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="bold" transform="translate(0 -1)">
+            <tspan x="128.44" y="32">Z</tspan>
+        </text>
+        <text fill="#000" fill-opacity=".5" font-family="Roboto-Bold, Roboto" font-size="10" font-weight="bold" transform="translate(0 -1)">
+            <tspan x="148.47" y="9">Z</tspan>
+        </text>
+    </g>
+</svg>
