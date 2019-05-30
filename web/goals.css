@@ -9,7 +9,13 @@ body{background-color: #f1f1f1;}
     justify-content: center;
 
 }
+img{
+    fill: #979797;
+}
 
+.img2{
+    fill: #979797;
+  }
 .img{
     display: block;
     margin-left: auto;

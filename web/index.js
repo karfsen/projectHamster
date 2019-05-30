@@ -5,6 +5,30 @@
     document.getElementById("s3").style.visibility="hidden";
     document.getElementById("burger").style.visibility="visible";
 }*/
+const socket = io.connect('http://itsovy.sk:1206');
+emit();
+refresh();
+var angle=0;
+
+function emit(){
+    socket.emit('getdata');
+    setTimeout(emit,300);
+}
+
+
+socket.on('connect', (data) => {
+	    console.log('check',socket.connected);
+	    //socket.emit('weatherData');
+	    socket.emit('getdata');
+	    console.log(data);
+});
+socket.on('data',(data)=>{
+    console.log(data);
+    document.getElementById("tempo").innerHTML=data.speed+" km/h";
+    angle += data.speed*20;
+    $("#wheelimg").css('transform','rotate('+angle+'deg)');
+});
+
 
 function refresh(){
     getLineGraph();
@@ -13,8 +37,6 @@ function refresh(){
     getUpdateTime();
     setTimeout(refresh,60000);
 }
-
-refresh();
 
  const convert = data =>
     data.reduce((acc, curr, index) => {
