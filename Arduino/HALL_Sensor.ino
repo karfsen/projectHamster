@@ -11,28 +11,31 @@ unsigned long int minTimeOfChange = 1000000;
 
 SocketIoClient webSocket;
 
-// spravil som co viem zatiaľ
+int State = 0;  // 1 or 2 last sensor
+unsigned long int ChangeCount = 0, lastChangeCount = 0, lastChangeDuration = 100000;
+
 void onSocketDisconnect(const char *, size_t len)
 {
   Serial.println("Client has disconnected from the server.");
   webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket");
-  webSocket.emit("speed");
 }
 
 void onSocketConnect(const char *, size_t len)
 {
   Serial.println("Client connected to the server.");
-  webSocket.emit("speed");
 }
 
-float onGetSpeed(const char *, size_t len)
+void onGetSpeed(const char *, size_t len)
 {
-   Serial.println("Client requested onGetSpeed");
-   float dlzkaImpulzu_m = 0.20;
-   float casImpulzu_sec = (float)minTimeOfChange / 1000.0;
-   float speed_m_per_sec = dlzkaImpulzu_m / casImpulzu_sec;
-   float speed_kmh = speed_m_per_sec * 3.6;
-   return speed_kmh;
+  float dlzkaImpulzu_m = 0.20;
+  float casImpulzu_sec = (float)lastChangeDuration / 1000.0;
+  float speed_m_per_sec = dlzkaImpulzu_m / casImpulzu_sec;
+  float speed_kmh = speed_m_per_sec * 3.6;
+
+  String json = "{ \"speed\": \"" + String((int)speed_kmh) + "\" }";
+
+  webSocket.emit("speedJson", json.c_str());
+  Serial.printf("\nGetSpeed: %s\n", json.c_str());
 }
 
 void setup() 
@@ -62,8 +65,6 @@ void setup()
   webSocket.on("speed", onGetSpeed);
 }
 
-int State = 0;  // 1 or 2 last sensor
-unsigned long int ChangeCount = 0, lastChangeCount = 0;
 void loop() 
 {
   unsigned long int cas = millis();
@@ -88,12 +89,17 @@ void loop()
   {
     if (State != newState)
     {
-      if ((State > 0) && ((cas - lastTimeOfChange) < minTimeOfChange)) minTimeOfChange = cas - lastTimeOfChange;
+      lastChangeDuration = cas - lastTimeOfChange;
+      if ((State > 0) && (lastChangeDuration < minTimeOfChange)) minTimeOfChange = lastChangeDuration;
       lastTimeOfChange = cas;
       ChangeCount++;
-      Serial.printf("State %d [%d] <min: %d>\n", newState, (int)ChangeCount, (int)minTimeOfChange);
+      Serial.printf("State %d [%d] <cur: %d, min: %d>\n", newState, (int)ChangeCount, (int)lastChangeDuration, (int)minTimeOfChange);
       State = newState;
-    }    
+    }
+  }
+  else
+  {
+    if ((cas - lastTimeOfChange) > lastChangeDuration) lastChangeDuration = cas - lastTimeOfChange;
   }
 
   if ((cas - lastTimeOfSend) > 60000)
