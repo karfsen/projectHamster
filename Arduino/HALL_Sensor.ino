@@ -27,25 +27,15 @@ void onSocketConnect(const char *, size_t len)
 
 void onGetSpeed(const char *, size_t len)
 {
-  float dlzkaImpulzu_m = 0.20;
+  float dlzkaImpulzu_cm = 20;
   float casImpulzu_sec = (float)lastChangeDuration / 1000.0;
-  float speed_m_per_sec = dlzkaImpulzu_m / casImpulzu_sec;
-  float speed_kmh = speed_m_per_sec * 3.6;
+  float speed_cm_per_sec = dlzkaImpulzu_cm / casImpulzu_sec;
+//  float speed_kmh = speed_m_per_sec * 3.6;
 
-  String json = "{ \"speed\": \"" + String((int)speed_kmh) + "\" }";
+  String json = "{ \"speed\": \"" + String((int)speed_cm_per_sec) + "\" }";
 
   webSocket.emit("speedJson", json.c_str());
   Serial.printf("\nGetSpeed: %s\n", json.c_str());
-}
-
-//Funkcia ktora bude posielať už data
-
-void sendData(char* output) {
-   if(WiFi.status() == WL_CONNECTED) {
-    
-     webSocket.emit("speed", output);
-     Serial.println("Data sended.");
-    }
 }
 
 void setup() 
@@ -105,13 +95,15 @@ void loop()
       ChangeCount++;
       Serial.printf("State %d [%d] <cur: %d, min: %d>\n", newState, (int)ChangeCount, (int)lastChangeDuration, (int)minTimeOfChange);
       State = newState;
+      onGetSpeed(NULL, 0);
     }
   }
   else
   {
     if ((cas - lastTimeOfChange) > lastChangeDuration) lastChangeDuration = cas - lastTimeOfChange;
+    if (lastChangeDuration > 2000) lastChangeDuration = 100000;
   }
-
+ 
   if ((cas - lastTimeOfSend) > 60000)
   {
     digitalWrite(LED_BUILTIN, LOW);
@@ -132,8 +124,4 @@ void loop()
 
   webSocket.loop();
   delay(10);
-  
-  //tu bude treba zavolať tu funkciu ktora vytvara JSON 
-  
-  
 }
