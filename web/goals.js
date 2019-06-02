@@ -41,15 +41,7 @@ window.onclick = function(event) {
 
 ondisGoalSelected=function(){
     document.getElementsByClassName("disGoalBox")[0].style.backgroundColor="#0700ff";
-    document.getElementsByClassName("img1").style.borderColor="#ffffff";
+    document.getElementsByClassName("img1").fill="#ffffff";
     document.getElementById("nextB").disabled=false;
     document.getElementById("nextB").style.backgroundColor="#0700ff";
-}
-
-oncharGoalSelected=function(){
-    document.getElementsByClassName("charGoalBox")[0].style.backgroundColor="#0700ff";
-    document.getElementsByClassName("img1").style.borderColor="#fffff";
-    document.getElementById("nextB").disabled=false;
-    document.getElementById("nextB").style.backgroundColor="#0700ff";
-    
 }

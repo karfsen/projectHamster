@@ -3,6 +3,27 @@
 
 body{background-color: #f1f1f1;}
 
+
+#tempo{
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #0700ff;
+}
+
+.wheel{
+  margin-left:32px;
+  margin-top: 16px;
+  width: 50%;
+  height:60%;
+  justify-content: center;
+}
+
 #s1{
   visibility: visible;
 }
