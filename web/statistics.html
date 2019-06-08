@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="stats.css">
+    <link rel="shortcut icon" href="img/hamster.png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script> 
+    <title>Project HAMSTER</title>
+</head>
+<body>
+    <div class="Align">
+        <div class="Wrapper">
+            <!--<div class="burger"><img src="img/menu.svg" alt="menu"></div>-->
+            <div class="inactive" onclick="location.href = './index.html';">
+                <div class="Tab">Home</div>
+            </div>
+            <div class="inactive" onclick="location.href = './goals.html';">
+                <div class="Tab">Goals</div>
+            </div>
+            <div class="activeStat" onclick="location.href = './statistics.html';">
+                <div class="Tab">Statistics</div>
+                <div class="StatRectangle"></div>
+            </div>
+            <div class="logo" onclick="location.href = './index.html';">
+                <img src="img/group@2x.png" class="Group"  alt="PROJECT HAMSTER"/>
+            </div>
+        </div>
+        <div class="Wrapper">
+
+            <div class="WhiteBox"></div>
+            <div class="WhiteBox2"></div>
+            <div class="DistanceBox"></div>
+            <div class="DistanceBox"></div>
+            <div class="DistanceBox">
+                <div class="Description">DISTANCE IN M</div>
+                <div><canvas id="distancegraph" width="940px" height="180px"></canvas></div>
+            </div>
+        </div>
+    
+    </div>
+    <script src="stats.js"></script>
+</body>
+</html>

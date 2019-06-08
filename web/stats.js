@@ -1,81 +1,8 @@
-/////////////////////////MAIN PAGE/////////////////////////////////////
-/*if(window.innerWidth<768){
-    document.getElementsByClassName("s1").style.visibility="hidden";
-    document.getElementById("s2").style.visibility="hidden";
-    document.getElementById("s3").style.visibility="hidden";
-    document.getElementById("burger").style.visibility="visible";
-}*/
-const distanceQuotesLT30=[
-"This is like walk from your computer to your fridge and back.",
-"This is like the length of bus.",
-"This is like short walk in the park."
-];
-
-const distanceQuotesLT100=[
-"This is like the height of tower of St Elisabeth Cathedral.",
-"This is almost like the height of Big Ben.",
-"This is almost like the length of football pitch."
-];
-
-const bolt=["This is something like Usain bolt can do in 9.58 seconds."];
-
-const distanceQuotesLT300=[
-"This is almost the length of Titanic.",
-"This is like walk from home to bus stop.",
-"It's about half as tall as The CN Tower."
-]
-
-const distanceQuotesMT300=[
-"This is like casual daily dog walk.",
-"THIS IS EXDI TODO.",
-"TODO."
-];
-
-
-const socket = io.connect('http://itsovy.sk:1206');
-
-refresh();
-var angle=0;
-
-
-function emit(){
-    socket.emit('getdata');
-    setTimeout(emit,100);
-}
-
-function countdown(){
-    var counter = 0;
-    var interval = setInterval(function() {
-        counter++;
-        if (counter == 5) {
-            document.getElementById("tempo").innerHTML=0+" cm/s";
-            clearInterval(interval);
-        }
-    }, 1000);
-}
-
-socket.on('connect', (data) => {
-	    console.log('check',socket.connected);
-	    //socket.emit('weatherData');
-	    socket.emit('getdata');
-	    console.log(data);
-});
-socket.on('data',(data)=>{
-    console.log(data);
-    document.getElementById("tempo").innerHTML=data.speed+" cm/s";
-    angle += data.speed*0.7;
-    $("#wheelimg").css('transform','rotate('+angle+'deg)');
-    countdown();
-});
-
-
 function refresh(){
     getLineGraph();
-    getTodayDistance();
-    getTodayEnergy();
-    getUpdateTime();
     setTimeout(refresh,60000);
 }
+refresh();
 
 const convert = data =>
 data.reduce((acc, curr, index) => {
@@ -155,7 +82,7 @@ const convertNotToday = data => {
                     console.log(result);
                 }
                 else{
-                    result=convertNotToday([{hour:0,distance:0}]);
+                    result=convertNotToday([{hour:1,distance:0}]);
                     console.log(result);
                 }
                 
@@ -233,56 +160,3 @@ const convertNotToday = data => {
         var Chart1 = new Chart(ctx, chartdata);
 
     }
-
-    function getUpdateTime(){
-        var xhttp2 = new XMLHttpRequest();
-        xhttp2.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let rslt=JSON.parse(this.responseText);
-                    document.getElementById("time").innerHTML="Last data update "+rslt.date;
-                };
-            }
-        xhttp2.open("GET", "http://itsovy.sk:1206/getupdatetime", true);
-        xhttp2.send();
-    }
-
-    function getTodayEnergy(){
-        var xhttp=new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let res=JSON.parse(this.responseText);
-                console.log(res);
-                document.getElementById("todayen").innerHTML=res.entoday+'<div class="unit">mAh</div>';
-                document.getElementById("quote1").innerHTML="This can power up your phone on "+Math.round(res.entoday*100/3277*100)/100+"%";
-            }
-        };
-        xhttp.open("GET", "http://itsovy.sk:1206/energytoday", true);
-        xhttp.send();
-    }
-
-    function getTodayDistance(){
-        var xhttp=new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let res=JSON.parse(this.responseText);
-                document.getElementById("todaydis").innerHTML=res.distancetoday/100.0+'<div class="unit">m</div>';
-                if(res.distancetoday/100<30){
-                    document.getElementById("quote").innerHTML=distanceQuotesLT30[Math.floor(Math.random() * 3)];
-                }
-                else if(res.distancetoday/100<100){
-                    document.getElementById("quote").innerHTML=distanceQuotesLT100[Math.floor(Math.random() * 3)];
-                }
-                else if(res.distancetoday/100<300){
-                    document.getElementById("quote").innerHTML=distanceQuotesLT300[Math.floor(Math.random() * 3)];
-                }
-                else if(res.distancetoday/100>300){
-                    document.getElementById("quote").innerHTML=bolt[0];
-                }
-            }
-        };
-        xhttp.open("GET", "http://itsovy.sk:1206/distancetoday", true);
-        xhttp.send();
-    }
-
-
-

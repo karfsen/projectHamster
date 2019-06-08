@@ -5,6 +5,10 @@ const io = require('socket.io')(server);
 const bodyParser = require("body-parser");
 const cors=require('cors');
 const mysql = require('mysql');
+const googleMapsClient = require('@google/maps').createClient({
+  key: ,
+  Promise:Promise
+});
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -18,12 +22,6 @@ let con=mysql.createConnection({
 });
 con.connect();
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With,Origin,Accept,Content-Type");
-    res.header('Access-Control-Allow-Methods', 'POST, GET')
-    next();
-  });  
 
 console.log("Server started");
 io.on('connection', client =>{ 
@@ -38,7 +36,6 @@ io.on('connection', client =>{
     console.log(event);
     console.log("Arduino sent data,sending to WebClient...");
     if(event.speed>0){
-        if (err) console.log(err);
         let sql="INSERT INTO speeds values(id,CURRENT_TIMESTAMP,"+event.speed+");";
         con.query(sql,(err)=>{
           if(err) console.log(err);
@@ -125,9 +122,13 @@ app.get("/todaylinegraph",(req,res,callbacktlg)=>{
   //console.log(todaydistance);
   con.query(todaydistance,(err,res)=>{
     if(err) console.log(err);
-    callbacktlg(200,res);
-    console.log("Data sent to the client!");
-    console.log(JSON.stringify(res));
+    let obj=[];
+    res.forEach(element=>{
+      obj.push({hour:element.hour+1,distance:element.distancecm/100.0});
+    });
+    callbacktlg(200,JSON.stringify(obj));
+    console.log("Today ata sent to the client!");
+    //console.log(JSON.stringify(res));
   });
 });
 
@@ -146,7 +147,7 @@ app.get("/yesterdaylinegraph",(req,res,callbackylg)=>{
   if(month<10)
     month="0"+month;
   if(today<10)
-    today="0"+day;
+    today="0"+today;
   if(yesterday<10)
     yesterday="0"+yesterday;
 
@@ -154,8 +155,13 @@ app.get("/yesterdaylinegraph",(req,res,callbackylg)=>{
     //console.log(todaydistance);
   con.query(todaydistance,(err,res)=>{
     if(err) console.log(err);
-    callbackylg(200,JSON.stringify(res));
-    console.log("Data sent to the client!");
+    let obj=[];
+    res.forEach(element=>{
+      obj.push({hour:element.hour+1,distance:element.distancecm/100.0});
+    });
+    console.log(obj);
+    callbackylg(200,JSON.stringify(obj));
+    console.log("Yesterday data sent to the client!");
   });
 });
 
@@ -185,7 +191,7 @@ app.get("/showgoals",(req,res,callbacksdg)=>{
     res.status(status).send(result);
   };;
 
-  let todaydistance="SELECT * from DistanceGoals";
+  let todaydistance="SELECT id,(DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,DepLoc,DesLoc,distance,remaining from DistanceGoals where done=0";
   //console.log(todaydistance);
   con.query(todaydistance,(err,res)=>{
   if(err) console.log(err);
@@ -275,12 +281,12 @@ app.get("/energytoday",(req,res,callbacket)=>{
   //console.log(todaydistance);
   con.query(todaydistance,(err,res)=>{
     if(err) console.log(err);
-    if(res[0].distancecm!=null){
+    if(res!=null){
       let obj=new Object();
       let count=0;
       res.forEach(element => {
-        if(element.distancecm/30/100*55.5<55.5){
-          count=count+element.distancecm/30/100*55.5;
+        if(element.distancecm/20/100*55.5<55.5){
+          count=count+element.distancecm/20/100*55.5;
         }
         else{
           count=count+55.5;
@@ -317,6 +323,56 @@ app.get("/getupdatetime",(req,res,callbackut)=>{
   callbackut(200,JSON.stringify({date:hour+":"+minute+" "+day+". "+month+" "+year}));
 
 
+});
+
+
+app.post("/getDistance",(req,res,callbackgD)=>{
+  console.log("Request on /getDistance");
+  callbackgD=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let depcity=req.body.departure;
+  let descity=req.body.destination;
+
+    console.log(depcity+" "+descity);
+
+    function callback(response, status) {
+      console.log(response);
+      console.log(status);
+      if (status.json.rows[0].elements[0].status !== "ZERO_RESULTS") {
+        let descity=status.json.destination_addresses[0];
+        let depcity=status.json.origin_addresses[0];
+        let info=status.json.rows[0].elements[0].distance;
+        
+        let obj=new Object();
+        obj.departCity=depcity;
+        obj.destinCity=descity;
+        obj.info=info;
+        callbackgD(200,JSON.stringify(obj));
+      }
+      else{
+        callbackgD(403,JSON.stringify({message:"These cities are unable to connect with distance matrix!"}));
+      }
+    }
+  
+    googleMapsClient.distanceMatrix({origins:[depcity],destinations:[descity]},callback);
+
+});
+
+app.post("/deletegoal",(req,res,callbackdg)=>{
+  console.log("Request on /deletegoal");
+  callbackdg=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let todayawake="DELETE from DistanceGoals where id="+req.body.id;
+  //console.log(todaydistance);
+  con.query(todayawake,(err,res)=>{
+    if(err) console.log(err);
+    callbackdg(200);
+    console.log("Data sent to the client!");
+  });
 });
 
 server.listen(1206,()=>{

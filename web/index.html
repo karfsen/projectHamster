@@ -35,28 +35,36 @@
             <div class="WhiteBox">
                 <div class="Description">DISTANCE TODAY</div>
                     <div id="todaydis"></div>
-                <div id="quote">This is like walk from home to bus stop!</div>
+                <div id="quote"></div>
             </div>
             <div class="WhiteBox2">
                 <div class="Description">ENERGY GENERATED TODAY</div>
-                    <div id="todayen"></div>
-                <div id="quote">Can power up mp3 player for 1 second!</div>
+                <div id="todayen"></div>
+                <div id="quote1"></div>
             </div>
             <div class="TempoBox">
                 <div class="Description">LIVE TEMPO</div>
-                <div class="wheel"><img src="img/group-5.svg" id="wheelimg"alt=""></div>
+                <div class="wheel">
+                    <div style="width:80px;">
+                            <svg id="wheelimg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+                                <g fill="none" fill-rule="evenodd">
+                                    <circle cx="40" cy="40" r="39.5" stroke="#979797"/>
+                                    <circle cx="40" cy="70" r="6" fill="#0700FF" transform="matrix(1 0 0 -1 0 140)"/>
+                                </g>
+                            </svg>
+                    </div>
+                </div>
                 <div id="tempo"></div>
             </div>
             <div class="DistanceBox">
-                <div class="Description">DISTANCE IN CM</div>
+                <div class="Description">DISTANCE IN M</div>
                 <div class="graphcontainer"><canvas id="distancegraph" width="940px" height="180px"></canvas></div>
             </div>
             <div id="time"></div>
-            <div class="CreatedBy">
-                <div class="CreatedByMe">web by Martin Krendželák, 2019</div>
-            </div>
         </div>
     </div>
-    
+    <footer class="CreatedBy">
+        <div class="CreatedByMe">web by Martin Krendželák, 2019</div>
+    </footer>
 </body>
 </html>
