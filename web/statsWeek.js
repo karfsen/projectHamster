@@ -10,143 +10,112 @@ refresh();
 
 const convert = data =>
 data.reduce((acc, curr, index) => {
-const zerosToAdd = [];
-if(index === 0){
-  for(var i = 0; i < curr.hour; i++){
-    zerosToAdd.push(0);
-  }
-}
 let distanceSum = 0;
 for (const o in data) {
      distanceSum += data[o].distance;
-    if (data[o].hour === curr.hour) {
+    if (data[o].day === curr.day) {
         break;
     }
 }
 let countOfValuesToAdd = 1;
 if (index + 1 !== data.length)
-    countOfValuesToAdd = data[index + 1].hour - data[index].hour;
+    countOfValuesToAdd = data[index + 1].day - data[index].day;
     let toAdd = [];
     for (var i = 0; i < countOfValuesToAdd; i++) toAdd.push(distanceSum);
     
-    return [...zerosToAdd, ...acc, ...toAdd];
+    return [...acc, ...toAdd];
 }, []);
 
 const convertToday = data => {
-    let hour=new Date().getHours();
-    console.log(hour);
+    let hour=new Date().getDay();
+    //console.log(hour);
     const converted = convert(data);
+    console.log(converted);
     const valueToAdd = converted[converted.length - 1];
     let arrToAdd = [];
-    for(var i = 0; i < hour - data[data.length -1].hour; i++){
+    for(var i = 0; i < hour - data[data.length -1].day; i++){
       arrToAdd.push(valueToAdd);
     }
     return [...converted, ...arrToAdd];
 }
 
-const convertNotToday = data => {
-    const converted = convert(data);
-    const valueToAdd = converted[converted.length - 1];
-    let arrToAdd = [];
-    for(var i = 0; i < 24 - data[data.length -1].hour; i++){
-      arrToAdd.push(valueToAdd);
+
+function getLineGraph(){
+    var result2;
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.onreadystatechange = function() {
+        console.log(this.responseText);
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("133 riadok robim");
+            if(this.responseText!=JSON.stringify([])){
+                //console.log("135 robim");
+                result2=convertToday(JSON.parse(this.responseText));
+                //console.log(result2);
+                renderGraph1(result2);
+
+            }
+            else{
+                //console.log("140 robim");
+                result2=convertToday([{hour:0,distance:0}]);
+                //console.log(result2);
+                renderGraph1(result2);
+            }
+        };
     }
-    return [...converted, ...arrToAdd];
+    xhttp2.open("GET", "http://itsovy.sk:1206/thisweeklinegraph", true);
+    xhttp2.send();
+
+    
 }
 
-    function getLineGraph(){
-        var result;
-        var result2;
-        var xhttp = new XMLHttpRequest();
-        var xhttp2 = new XMLHttpRequest();
-        xhttp2.onreadystatechange = function() {
-            console.log(this.responseText);
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("133 riadok robim");
-                if(this.responseText!=JSON.stringify([])){
-                    console.log("135 robim");
-                    result2=convertToday(JSON.parse(this.responseText));
-                    console.log(result2);
-                }
-                else{
-                    console.log("140 robim");
-                    result2=convertToday([{hour:0,distance:0}]);
-                    console.log(result2);
-                }
-            };
+
+function renderGraph1(data1) {
+    var ctx = document.getElementById('distancegraph').getContext('2d');		
+    Chart.defaults.global.maintainAspectRatio = false;
+    
+    var chartdata={
+        type: 'line',
+        data: {
+            labels: [new Date().getDate()-6+".",new Date().getDate()-5+".",new Date().getDate()-4+".",new Date().getDate()-3+".",new Date().getDate()-2+".",new Date().getDate()-1+".",new Date().getDate()+"."],
+            datasets: [{
+                label: 'Today',
+                fill: false,
+                lineTension: 0.1,
+                borderWidth:1,
+                backgroundColor: 'rgba(0,0,255)',
+                borderColor: 'rgba(0,0,255)',
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: 'rgba(0,0,255)',
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: 'rgba(0,0,255)',
+                pointHoverBorderColor: 'rgba(0,0,255)',
+                pointHoverBorderWidth: 0.5,
+                pointRadius: 0.1,
+                pointHitRadius: 10,
+                data:data1
+                }]
+        },
+        options: {
+            responsive:true,
+            legend:{
+                position:'right'
+            }
         }
-        xhttp2.open("GET", "http://itsovy.sk:1206/todaylinegraph", true);
-        xhttp2.send();
+    };
 
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
-                if(this.responseText!=JSON.stringify([])){
-                    result=convertNotToday(JSON.parse(this.responseText));
-                    console.log(result);
-                }
-                else{
-                    result=convertNotToday([{hour:1,distance:0}]);
-                    console.log(result);
-                }
-                
-                setTimeout(() => {
-                    renderGraph1(result2,result);
-                }, 50);
-            }
-        };
-        xhttp.open("GET", "http://itsovy.sk:1206/yesterdaylinegraph", true);
-        xhttp.send();
-    }
-
-
-    function renderGraph1(data1,data2) {
-        var ctx = document.getElementById('distancegraph').getContext('2d');		
-        Chart.defaults.global.maintainAspectRatio = false;
-        
-        var chartdata={
-            type: 'line',
-            data: {
-                labels: ['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
-                datasets: [{
-                    label: 'Today',
-                    fill: false,
-                    lineTension: 0.1,
-                    borderWidth:1,
-                    backgroundColor: 'rgba(0,0,255)',
-                    borderColor: 'rgba(0,0,255)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(0,0,255)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(0,0,255)',
-                    pointHoverBorderColor: 'rgba(0,0,255)',
-                    pointHoverBorderWidth: 0.5,
-                    pointRadius: 0.1,
-                    pointHitRadius: 10,
-                    data:data1
-                    }]
-            },
-            options: {
-                responsive:true,
-                legend:{
-                    position:'right'
-                }
-            }
-        };
-
-        var Chart1 = new Chart(ctx, chartdata);
+    var Chart1 = new Chart(ctx, chartdata);
 
 }
 
 
 function drawChart() {
     let dataset;
-    fetch("http://itsovy.sk:1206/todayawake",{
+    fetch("http://itsovy.sk:1206/thisweekawake",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -216,7 +185,7 @@ function drawChart() {
 }
 
 function getTodayTopSpeed(){
-    fetch("http://itsovy.sk:1206/todaytopspeed",{
+    fetch("http://itsovy.sk:1206/weektopspeed",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -245,7 +214,7 @@ function getTodayTopSpeed(){
 }
 
 function getBarChart(){
-    fetch("http://itsovy.sk:1206/todaylinegraph",{
+    fetch("http://itsovy.sk:1206/thisweeklinegraph",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -277,9 +246,9 @@ function drawBarChart(data){
     var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],
+        labels: [new Date().getDate()-6+".",new Date().getDate()-5+".",new Date().getDate()-4+".",new Date().getDate()-3+".",new Date().getDate()-2+".",new Date().getDate()-1+".",new Date().getDate()+"."],
         datasets: [{
-        label: '# of meters a hour',
+        label: '# of meters a day',
         data: data,
         backgroundColor: ['rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
@@ -287,24 +256,7 @@ function drawBarChart(data){
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
+        'rgba(7,0,255,1)'
         ],
         borderColor: ['rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
@@ -312,24 +264,7 @@ function drawBarChart(data){
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
+        'rgba(7,0,255,1)'
         ],
         borderWidth: 1
         }]
@@ -361,7 +296,7 @@ function drawactivitychart(data){
     var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],
+        labels: [new Date().getDate()-6+".",new Date().getDate()-5+".",new Date().getDate()-4+".",new Date().getDate()-3+".",new Date().getDate()-2+".",new Date().getDate()-1+".",new Date().getDate()+"."],
         datasets: [{
         label: 'Active',
         data: data,
@@ -371,24 +306,7 @@ function drawactivitychart(data){
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
+        'rgba(7,0,255,1)'
         ],
         borderColor: ['rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
@@ -396,24 +314,7 @@ function drawactivitychart(data){
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
         'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
-        'rgba(7,0,255,1)',
+        'rgba(7,0,255,1)'
         ],
         borderWidth: 1
         }]
@@ -451,9 +352,9 @@ let i = 0;
 const convertBar = (data) => data.reduce((acc, {distance})=>{
     let zerosToAdd = 0;
     if(data[i+1]){
-        zerosToAdd = data[i+1].hour-data[i].hour
+        zerosToAdd = data[i+1].hour-data[i].day
     }else{
-        zerosToAdd = 24 - data[i].hour
+        zerosToAdd = 31 - data[i].day
     }
     let zeros = [];
     for(let k = 0; k < zerosToAdd -1; k++){
@@ -478,5 +379,3 @@ const convertActivity = (data) => data.reduce((acc, {distance})=>{
     j++;
     return [...acc, 1, ...zeros]
 }, []);
-
-

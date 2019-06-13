@@ -11,23 +11,42 @@
     <title>Project HAMSTER</title>
 </head>
 <body>
+    <div id="delModal" class="modal">
+        <div class="Align">
+            <div class="modal-content">
+                <div class="close" id="x" onclick="closeDelGoal()">
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                        <path fill="#0700FF" fill-rule="evenodd" d="M22.586 25L9.15 11.565l1.414-1.414L24 23.586 37.435 10.15l1.414 1.414L25.414 25 38.85 38.435l-1.414 1.414L24 26.414 10.565 39.85l-1.414-1.414L22.586 25z"/>
+                    </svg>
+                </div>
+                <div id="deletecharGoal">
+                    <div class="delgoalQuote">Delete Goal permanently?</div>
+                    <div class="lostEffort">Hamster effort made so far will be wasted. Are you sure?</div>
+                    <div>
+                        <button class="backDel" onclick="closeDelGoal()">Back</button>
+                        <button class="nextButtonDel"  onclick="removecharGoal()" >Yes, delete task</button>
+                    </div>
+                </div>
+                <div id="deleteGoal">
+                    <div class="delgoalQuote">Delete Goal permanently?</div>
+                    <div class="lostEffort">Hamster effort made so far will be wasted. Are you sure?</div>
+                    <div>
+                        <button class="backDel" onclick="document.getElementById('delModal').style.display='none'">Back</button>
+                        <button class="nextButtonDel" onclick="removeGoal()" >Yes, delete task</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="myModal" class="modal">
         <div class="Align">
             <div class="modal-content">
-                <div class="close" id="x" onclick="close()">
+                <div class="close" id="x" onclick="closeModal()">
                     <svg  xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                         <path fill="#0700FF" fill-rule="evenodd" d="M22.586 25L9.15 11.565l1.414-1.414L24 23.586 37.435 10.15l1.414 1.414L25.414 25 38.85 38.435l-1.414 1.414L24 26.414 10.565 39.85l-1.414-1.414L22.586 25z"/>
                     </svg>
                 </div>
                 <div class="Step" id="stepquote">Step 1 of 3</div>
-                <div id="deleteGoal">
-                    <div class="delgoalQuote">Delete Goal permanently?</div>
-                    <div class="lostEffort">Hamster effort made so far will be wasted. Are you sure?</div>
-                    <div>
-                        <button class="backDel"  onclick="close()">Back</button>
-                        <button class="nextButtonDel"  onclick="removeGoal()" >Yes, delete task</button>
-                    </div>
-                </div>
                 <div id="step1">
                     <div class="goalType">New goal type</div>
                     <div class="selectType">Select type of task you want hamster to perform.</div>
@@ -172,7 +191,7 @@
                     </div>
                     <div style="margin-left:100px; display: flex; flex-wrap: wrap">
                         <button class="backButton" id="backB" onclick="step3charBack()">Back</button>
-                        <button  id="submitB" onclick="submitDistanceGoal()">Submity new goal</button>
+                        <button  id="submitB" onclick="submitChargeGoal()">Submity new goal</button>
                     </div>
                 </div>
             </div>
@@ -204,7 +223,7 @@
             <div id="goals">
             </div>
             <div class="AddedTask">
-                <div class="CreatedByMe">New task submitted successfully!</div>
+                <div class="CreatedByMe" style="color:white">New task submitted successfully!</div>
             </div>
         </div>
     </div>

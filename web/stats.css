@@ -5,6 +5,19 @@ body{background-color: #f1f1f1;}
 
 
 
+.inactivePeriod{
+    cursor: default;
+    font-family: Roboto;
+    margin-top: 16px;
+    margin-right: 24px;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.5);
+}
 .CreatedBy{
     margin: 0 auto;
     bottom: 0;
@@ -31,6 +44,7 @@ body{background-color: #f1f1f1;}
 .Description {
     margin-left: 16px;
     margin-top:10px;
+    margin-bottom: 8px;
     width: 100%;
     height: 14px;
     font-family: 'Roboto', sans-serif;
@@ -44,6 +58,13 @@ body{background-color: #f1f1f1;}
   }
 
 @media only screen and (min-width: 1024px) {
+
+
+    .periodWrap{
+        margin-left: 70%;
+        display:flex; 
+        flex-wrap:wrap;
+    }
 
     .Align{
         width: 1024px;
@@ -72,7 +93,33 @@ body{background-color: #f1f1f1;}
         display: flex;
         flex-wrap: wrap;
       }
-    
+
+      #Wrapper1{
+        width:auto;
+        height:auto;
+        margin-left: 40px;
+        margin-right: 40px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      #Wrapper2{
+        width:auto;
+        height:auto;
+        margin-left: 40px;
+        margin-right: 40px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      #Wrapper3{
+        width:auto;
+        height:auto;
+        margin-left: 40px;
+        margin-right: 40px;
+        display: flex;
+        flex-wrap: wrap;
+      }
     
       .active {
         color:#0700ff;
@@ -159,7 +206,7 @@ body{background-color: #f1f1f1;}
         margin-top: 16px;
         margin-right: 16px;
         width: 456px;
-        height: 141px;
+        min-height: 210px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -167,7 +214,7 @@ body{background-color: #f1f1f1;}
     .WhiteBox2 {
         margin-top: 16px;
         width: 472px;
-        height: 141px;
+        min-height: 210px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -175,7 +222,7 @@ body{background-color: #f1f1f1;}
     .DistanceBox{
         margin-top: 16px;
         width: 944px;
-        height: 217px;
+        min-height: 217px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -185,12 +232,18 @@ body{background-color: #f1f1f1;}
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .periodWrap{
+        margin-left: 65%;
+        display:flex; 
+        flex-wrap:wrap;
+    }
+
     .Align{
         margin: auto;
     }
         
     .Tab {
-        cursor: default;
         cursor: default;
         width: auto;
         height: auto;
@@ -204,6 +257,29 @@ body{background-color: #f1f1f1;}
     }
         
     .Wrapper{
+        width:auto;
+        height:auto;
+        margin: 24px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    #Wrapper1{
+        width:auto;
+        height:auto;
+        margin: 24px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    #Wrapper2{
+        width:auto;
+        height:auto;
+        margin: 24px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #Wrapper3{
         width:auto;
         height:auto;
         margin: 24px;
@@ -294,7 +370,7 @@ body{background-color: #f1f1f1;}
         margin-top: 16px;
         margin-right: 16px;
         width: 44.7vw;
-        height: 141px;
+        min-height: 210px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -303,7 +379,7 @@ body{background-color: #f1f1f1;}
     .WhiteBox2 {
         margin-top: 16px;
         width: 44.7vw;
-        height: 141px;
+        min-height: 210px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -312,7 +388,7 @@ body{background-color: #f1f1f1;}
     .DistanceBox{
         margin-top: 16px;
         width: 91vw;
-        height: 205px;
+        min-height: 205px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -322,8 +398,15 @@ body{background-color: #f1f1f1;}
 
 
 @media only screen and (min-width:320px) and (max-width: 767px) {
+
+    .periodWrap{
+        justify-content: center;
+        display:flex; 
+        flex-wrap:wrap;
+    }
+
     .Tab {
-        
+        cursor: default;
         width: auto;
         height: auto;
         font-family: 'Roboto', sans-serif;
@@ -336,6 +419,22 @@ body{background-color: #f1f1f1;}
     }
 
     .Wrapper{
+        width:auto;
+        height:auto;
+        margin: 8px;
+    }
+
+    #Wrapper1{
+        width:auto;
+        height:auto;
+        margin: 8px;
+    }
+    #Wrapper2{
+        width:auto;
+        height:auto;
+        margin: 8px;
+    }
+    #Wrapper3{
         width:auto;
         height:auto;
         margin: 8px;
@@ -426,7 +525,7 @@ body{background-color: #f1f1f1;}
     .WhiteBox {
         margin-top: 8px;
         width: auto;
-        height: 141px;
+        min-height: 210px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -435,7 +534,7 @@ body{background-color: #f1f1f1;}
     .WhiteBox2 {
         margin-top: 8px;
         width: auto;
-        height: 141px;
+        min-height: 210px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
@@ -444,9 +543,97 @@ body{background-color: #f1f1f1;}
     .DistanceBox{
         margin-top: 8px;
         width: auto;
-        height: 217px;
+        min-height: 217px;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
     }
+}
+
+
+.blueQuote{
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #0700ff;
+}
+
+#doneMins,#doneMins1,#doneMins2{
+    margin-bottom: 12px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #0700ff;
+}
+
+.greyQuote{
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #666666;
+}
+
+.sleepMins{
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.5);  
+}
+
+.unit{
+    margin-left: 8px;
+    margin-top: 22px;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #666666;
+}
+
+#number,#number1,#number2{
+    font-family: Roboto;
+    font-size: 48px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #0700ff;
+}
+
+#updateData{
+    width: 100%;
+    height: 11px;
+    margin-top: 200px;
+    margin-bottom: 100px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #666666;
 }

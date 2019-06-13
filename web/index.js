@@ -27,8 +27,8 @@ const distanceQuotesLT300=[
 
 const distanceQuotesMT300=[
 "This is like casual daily dog walk.",
-"THIS IS EXDI TODO.",
-"TODO."
+"It's about as tall as The Taipei 101.",
+"This is something like walk to shop for goods."
 ];
 
 
@@ -37,10 +37,9 @@ const socket = io.connect('http://itsovy.sk:1206');
 refresh();
 var angle=0;
 
-
 function emit(){
     socket.emit('getdata');
-    setTimeout(emit,100);
+    setTimeout(emit,300);
 }
 
 function countdown(){
@@ -48,7 +47,7 @@ function countdown(){
     var interval = setInterval(function() {
         counter++;
         if (counter == 5) {
-            document.getElementById("tempo").innerHTML=0+" cm/s";
+            document.getElementById("tempo").innerHTML=0+" km/h";
             clearInterval(interval);
         }
     }, 1000);
@@ -62,8 +61,8 @@ socket.on('connect', (data) => {
 });
 socket.on('data',(data)=>{
     console.log(data);
-    document.getElementById("tempo").innerHTML=data.speed+" cm/s";
-    angle += data.speed*0.7;
+    document.getElementById("tempo").innerHTML=Math.round(0.036*data.speed*100)/100+" km/h";
+    angle += data.speed*2;
     $("#wheelimg").css('transform','rotate('+angle+'deg)');
     countdown();
 });
@@ -253,7 +252,7 @@ const convertNotToday = data => {
                 let res=JSON.parse(this.responseText);
                 console.log(res);
                 document.getElementById("todayen").innerHTML=res.entoday+'<div class="unit">mAh</div>';
-                document.getElementById("quote1").innerHTML="This can power up your phone on "+Math.round(res.entoday*100/3277*100)/100+"%";
+                document.getElementById("quote1").innerHTML="This can power up your phone on "+Math.round(res.entoday*100/2658*100)/100+"%";
             }
         };
         xhttp.open("GET", "http://itsovy.sk:1206/energytoday", true);
@@ -266,17 +265,20 @@ const convertNotToday = data => {
             if (this.readyState == 4 && this.status == 200) {
                 let res=JSON.parse(this.responseText);
                 document.getElementById("todaydis").innerHTML=res.distancetoday/100.0+'<div class="unit">m</div>';
-                if(res.distancetoday/100<30){
+                if(res.distancetoday/100<=30&&res.distancetoday/100>0){
                     document.getElementById("quote").innerHTML=distanceQuotesLT30[Math.floor(Math.random() * 3)];
                 }
-                else if(res.distancetoday/100<100){
+                else if(res.distancetoday/100<100&&res.distancetoday/100>30){
                     document.getElementById("quote").innerHTML=distanceQuotesLT100[Math.floor(Math.random() * 3)];
                 }
-                else if(res.distancetoday/100<300){
+                else if(res.distancetoday/100<300&&res.distancetoday/100>100){
                     document.getElementById("quote").innerHTML=distanceQuotesLT300[Math.floor(Math.random() * 3)];
                 }
-                else if(res.distancetoday/100>300){
+                else if(res.distancetoday/100==100){
                     document.getElementById("quote").innerHTML=bolt[0];
+                }
+                else if(res.distancetoday/100>=300){
+                    document.getElementById("quote").innerHTML=distanceQuotesMT300[Math.floor(Math.random()*3)];
                 }
             }
         };

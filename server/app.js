@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const cors=require('cors');
 const mysql = require('mysql');
 const googleMapsClient = require('@google/maps').createClient({
-  key: ,
+  key: YOUR KEY,
   Promise:Promise
 });
 
@@ -35,8 +35,8 @@ io.on('connection', client =>{
   client.on('speedJson', (event) =>{
     console.log(event);
     console.log("Arduino sent data,sending to WebClient...");
-    if(event.speed>0){
-        let sql="INSERT INTO speeds values(id,CURRENT_TIMESTAMP,"+event.speed+");";
+    if(event.speed>0&&event.speed<=100){
+        let sql="INSERT INTO speeds values(id,CURRENT_TIMESTAMP,"+0.036*event.speed+");";
         con.query(sql,(err)=>{
           if(err) console.log(err);
           console.log("SpeedData inserted");
@@ -186,7 +186,7 @@ app.post("/newgoal",(req,res,callbackng)=>{
 });
 
 app.get("/showgoals",(req,res,callbacksdg)=>{
-  console.log("Request on /showdistancegoals");
+  console.log("Request on /showgoals");
   callbacksdg=function(status,result){
     res.status(status).send(result);
   };;
@@ -199,8 +199,22 @@ app.get("/showgoals",(req,res,callbacksdg)=>{
     console.log("Data sent to the client!");
   });
 });
+app.get("/showchargoals",(req,res,callbacksdg)=>{
+  console.log("Request on /showgoals");
+  callbacksdg=function(status,result){
+    res.status(status).send(result);
+  };;
 
-app.get("/todayawake",(req,res,callbacktta)=>{
+  let todaydistance="SELECT id,device,(DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,amount,remaining from ChargeGoals where done=0";
+  //console.log(todaydistance);
+  con.query(todaydistance,(err,res)=>{
+  if(err) console.log(err);
+    callbacksdg(200,res);
+    console.log("Data sent to the client!");
+  });
+});
+
+app.get("/todayawake",(req,res,callbackta)=>{
   console.log("Request on /todayawake");
   callbackta=function(status,result){
     res.status(status).send(result);
@@ -216,21 +230,92 @@ app.get("/todayawake",(req,res,callbacktta)=>{
   if(day<10)
     day="0"+day;
 
-  let todayawake="select count(id) as todaymins where time >='"+year+"-"+month+"-"+yesterday+" 00:00:00';";
-  //console.log(todaydistance);
+  let todayawake="select count(id) as minutes from data where time >='"+year+"-"+month+"-"+day+" 00:00:00';";
   con.query(todayawake,(err,res)=>{
     if(err) console.log(err);
-    callbacktta(200,res);
+    let hours=new Date().getHours();
+    let mins=new Date().getMinutes();
+    let summins=(hours*60)+mins;
+    console.log(hours+" hodin "+mins+" minut ="+summins);
+    let obj=new Object();
+    obj.percentDone=Math.round(res[0].minutes*100/summins*100)/100;
+    obj.percentTODO=100-obj.percentDone;
+    obj.mins=res[0].minutes;
+    obj.totalmins=summins;
+    callbackta(200,JSON.stringify(obj));
     console.log("Data sent to the client!");
   });
 });
 
-//TODO topSpeed tabuľka v DB
-//
-//
-//
-//
-//
+
+app.get("/thisweekawake",(req,res,callbackta)=>{
+  console.log("Request on /thisweekawake");
+  callbackta=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let day=new Date().getDate()-7;
+  let month=new Date().getMonth()+1;
+  let year=new Date().getFullYear();
+  console.log("260 : "+day+" "+month+" "+year);
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+  let todayawake="select count(id) as minutes from data where time >='"+year+"-"+month+"-"+day+" 00:00:00';";
+  con.query(todayawake,(err,res)=>{
+    if(err) console.log(err);
+    let hours=new Date().getHours()+6*24;
+    let mins=new Date().getMinutes();
+    let summins=(hours*60)+mins;
+    console.log(hours+" hodin "+mins+" minut ="+summins);
+    let obj=new Object();
+    obj.percentDone=Math.round(res[0].minutes*100/summins*100)/100;
+    obj.percentTODO=100-obj.percentDone;
+    obj.mins=res[0].minutes;
+    obj.totalmins=summins;
+    callbackta(200,JSON.stringify(obj));
+    console.log("Data sent to the client!");
+  });
+});
+
+app.get("/thismonthawake",(req,res,callbackta)=>{
+  console.log("Request on /thismonthawake");
+  callbackta=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let day="01";
+  let lastday=31;
+  let month=new Date().getMonth()+1;
+  let year=new Date().getFullYear();
+  console.log("260 : "+day+" "+month+" "+year);
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+  let todayawake="select count(id) as minutes from data where time between '"+year+"-"+month+"-"+day+" 00:00:00' and '"+year+"-"+month+"-"+lastday+" 00:00:00';";
+  con.query(todayawake,(err,res)=>{
+    if(err) console.log(err);
+    let hours=new Date().getHours()+31*24;
+    let mins=new Date().getMinutes();
+    let summins=(hours*60)+mins;
+    console.log(hours+" hodin "+mins+" minut ="+summins);
+    let obj=new Object();
+    obj.percentDone=Math.round(res[0].minutes*100/summins*100)/100;
+    obj.percentTODO=100-obj.percentDone;
+    obj.mins=res[0].minutes;
+    obj.totalmins=summins;
+    callbackta(200,JSON.stringify(obj));
+    console.log("Data sent to the client!");
+  });
+});
+
+
 app.get("/todaytopspeed",(req,res,callbacktts)=>{
   console.log("Request on /todaytopspeed");
   callbacktts=function(status,result){
@@ -247,20 +332,90 @@ app.get("/todaytopspeed",(req,res,callbacktts)=>{
   if(day<10)
     day="0"+day;
 
-  let todayawake="select time,max(speed) from speeds where time >='"+year+"-"+month+"-"+yesterday+" 00:00:00';";
+  let topspeed="select MAX(speed) as speed from speeds where time >='"+year+"-"+month+"-"+day+" 00:00:00';";
+  console.log(topspeed);
   //console.log(todaydistance);
-  con.query(todayawake,(err,res)=>{
+  con.query(topspeed,(err,res)=>{
     if(err) console.log(err);
-    callbacktts(200,res);
+    let speed=res[0].speed;
+    let toptime="select (DATE_FORMAT(MIN(time), '%H:%i')) as time from speeds where time >='"+year+"-"+month+"-"+day+" 00:00:00' and speed="+speed+";"
+    con.query(toptime,(err,res)=>{
+      let obj=new Object();
+      obj.speed=speed;
+      obj.time=res[0].time;
+      callbacktts(200,JSON.stringify(obj));
+    });
     console.log("Data sent to the client!");
   });
 });
 
-//
-//
-//
-//
-//
+app.get("/weektopspeed",(req,res,callbacktts)=>{
+  console.log("Request on /weektopspeed");
+  callbacktts=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let day=new Date().getDate()-7;
+  let month=new Date().getMonth()+1;
+  let year=new Date().getFullYear();
+  console.log(day+" "+month+" "+year);
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+  let topspeed="select MAX(speed) as speed from speeds where time >='"+year+"-"+month+"-"+day+" 00:00:00';";
+  console.log(topspeed);
+  //console.log(todaydistance);
+  con.query(topspeed,(err,res)=>{
+    if(err) console.log(err);
+    let speed=res[0].speed;
+    let toptime="select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time >='"+year+"-"+month+"-"+day+" 00:00:00' and speed="+speed+";"
+    con.query(toptime,(err,res)=>{
+      let obj=new Object();
+      obj.speed=speed;
+      obj.time=res[0].time;
+      callbacktts(200,JSON.stringify(obj));
+    });
+    console.log("Data sent to the client!");
+  });
+});
+
+
+app.get("/monthtopspeed",(req,res,callbacktts)=>{
+  console.log("Request on /monthtopspeed");
+  callbacktts=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let day="01";
+  let lastday="31";
+  let month=new Date().getMonth()+1;
+  let year=new Date().getFullYear();
+  console.log(day+" "+month+" "+year);
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+  let topspeed="select MAX(speed) as speed from speeds where time between '"+year+"-"+month+"-"+day+" 00:00:00' and '"+year+"-"+month+"-"+lastday+" 00:00:00';";
+  console.log(topspeed);
+  //console.log(todaydistance);
+  con.query(topspeed,(err,res)=>{
+    if(err) console.log(err);
+    let speed=res[0].speed;
+    let toptime="select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time between '"+year+"-"+month+"-"+day+" 00:00:00' and '"+year+"-"+month+"-"+lastday+" 00:00:00' and speed="+speed+";";
+    con.query(toptime,(err,res)=>{
+      let obj=new Object();
+      obj.speed=speed;
+      obj.time=res[0].time;
+      callbacktts(200,JSON.stringify(obj));
+    });
+    console.log("Data sent to the client!");
+  });
+});
 
 app.get("/energytoday",(req,res,callbacket)=>{
   console.log("Request on /energytoday");
@@ -285,8 +440,8 @@ app.get("/energytoday",(req,res,callbacket)=>{
       let obj=new Object();
       let count=0;
       res.forEach(element => {
-        if(element.distancecm/20/100*55.5<55.5){
-          count=count+element.distancecm/20/100*55.5;
+        if(element.distancecm/40/100*55.5<55.5){
+          count=count+element.distancecm/40/100*55.5;
         }
         else{
           count=count+55.5;
@@ -360,6 +515,23 @@ app.post("/getDistance",(req,res,callbackgD)=>{
 
 });
 
+app.post("/newchargegoal",(req,res,callbackcg)=>{
+  console.log("Request on /newchargegoal !");
+  callbackcg=function(status){
+    res.status(status).send();
+  };
+
+  let amount=req.body.amount;
+  let device=req.body.device;
+
+  let insertSQL="INSERT INTO ChargeGoals(device,amount,remaining) values('"+device+"',"+amount+","+amount+");";
+  con.query(insertSQL,(err)=>{
+    if(err) console.log(err);
+    console.log("I have inserted new charge goal to database!");
+    callbackcg(200);
+  });
+});
+
 app.post("/deletegoal",(req,res,callbackdg)=>{
   console.log("Request on /deletegoal");
   callbackdg=function(status,result){
@@ -374,6 +546,93 @@ app.post("/deletegoal",(req,res,callbackdg)=>{
     console.log("Data sent to the client!");
   });
 });
+
+app.post("/deletechargoal",(req,res,callbackdg)=>{
+  console.log("Request on /deletechargoal");
+  callbackdg=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let todayawake="DELETE from ChargeGoals where id="+req.body.id;
+  //console.log(todaydistance);
+  con.query(todayawake,(err,res)=>{
+    if(err) console.log(err);
+    callbackdg(200);
+    console.log("Data sent to the client!");
+  });
+});
+
+
+app.get("/thisweeklinegraph",(req,res,callbacktlg)=>{
+  console.log("Request on /thisweeklinegraph");
+  callbacktlg=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let day=new Date().getDate()-7;
+  let month=new Date().getMonth()+1;
+  let year=new Date().getFullYear();
+  console.log(day+" "+month+" "+year);
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+
+  let todaydistance="select day(time) as day,sum(distancecm) as distancecm from data where time>='"+year+"-"+month+"-"+day+" 00:00:00' group by day(time);";
+
+  //console.log(todaydistance);
+  con.query(todaydistance,(err,res)=>{
+    if(err) console.log(err);
+    let obj=[];
+    res.forEach(element=>{
+      obj.push({day:element.day,distance:element.distancecm/100.0});
+    });
+    callbacktlg(200,JSON.stringify(obj));
+    console.log("This week data sent to the client!");
+    //console.log(JSON.stringify(res));
+  });
+});
+
+app.get("/thismonthlinegraph",(req,res,callbacktlg)=>{
+  console.log("Request on /thismonthlinegraph");
+  callbacktlg=function(status,result){
+    res.status(status).send(result);
+  };
+
+  let day="01";
+  let lastday=31;
+  let month=new Date().getMonth()+1;
+  let year=new Date().getFullYear();
+  console.log(day+" "+month+" "+year);
+
+  if(month<10)
+    month="0"+month;
+  if(day<10)
+    day="0"+day;
+
+
+  let todaydistance="select day(time) as day,sum(distancecm) as distancecm from data where time between '"+year+"-"+month+"-"+day+" 00:00:00' and '"+year+"-"+month+"-"+lastday+" 00:00:00' group by day(time);";
+
+  //console.log(todaydistance);
+  con.query(todaydistance,(err,res)=>{
+    if(err) console.log(err);
+    let obj=[];
+    res.forEach(element=>{
+      obj.push({day:element.day,distance:element.distancecm/100.0});
+    });
+    callbacktlg(200,JSON.stringify(obj));
+    console.log("This week data sent to the client!");
+    //console.log(JSON.stringify(res));
+  });
+});
+
+
+
+
+
+
 
 server.listen(1206,()=>{
     console.log("Sever listening on port 1206");

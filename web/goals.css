@@ -191,7 +191,7 @@ html{width: 98%;}
         flex-wrap: wrap;
         margin-top: 16px;
         margin-right: 16px;
-        width: 384px;
+        width: 390px;
         height: 40%;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
@@ -331,7 +331,7 @@ html{width: 98%;}
         flex-wrap: wrap;
         margin-top: 16px;
         margin-right: 16px;
-        width: 40vw;
+        width: 41vw;
         height: 40%;
         border-radius: 4px;
         box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
@@ -487,8 +487,9 @@ html{width: 98%;}
 
 
 .timeDiv{
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
+    margin-bottom: 16px;
+    font-family: Roboto;
+    font-size: 14px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
@@ -624,14 +625,14 @@ html{width: 98%;}
 
 .disGoalQuote{
     margin-bottom: 4px;
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto;
     font-size: 10px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    color: #000000;
+    color: #666666;
 }
 
 input{
@@ -836,8 +837,15 @@ input{
     flex-wrap: wrap;
 }
 
+#deletecharGoal{
+    margin-top: 20rem;
+    margin-left: 20rem;
+    display: none;
+    flex-wrap: wrap;
+}
+
 .delgoalQuote{
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     margin-top: 24px;
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
@@ -850,6 +858,7 @@ input{
 }
 
 .lostEffort{
+    margin-bottom: 48px;
     font-family: Roboto;
     font-size: 10px;
     font-weight: normal;
@@ -866,6 +875,7 @@ input{
     border-radius: 24px;
     border: solid 1px #0700ff;
     font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
     font-size: 16px;
     font-weight: bold;
     font-style: normal;
