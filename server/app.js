@@ -5,7 +5,7 @@ const io = require('socket.io')(server);
 const cors=require('cors');
 const mysql = require('mysql');
 const googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyAwREM_5iQPb5mxqEYAw_jZEwsV91-YLNs',
+  key: 'dsafsdfsdfsdfsd',
   Promise:Promise
 });
 
