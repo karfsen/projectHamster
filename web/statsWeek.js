@@ -1,3 +1,10 @@
+var production=false;
+var backend="";
+if(production){
+    backend="http://itsovy.sk:1206";
+}else{
+    backend="http://localhost:1206";
+}
 function refresh(){
     getLineGraph();
     drawChart();
@@ -62,7 +69,7 @@ function getLineGraph(){
             }
         };
     }
-    xhttp2.open("GET", "http://itsovy.sk:1206/thisweeklinegraph", true);
+    xhttp2.open("GET", backend+"/thisweeklinegraph", true);
     xhttp2.send();
 
     
@@ -115,7 +122,7 @@ function renderGraph1(data1) {
 
 function drawChart() {
     let dataset;
-    fetch("http://itsovy.sk:1206/thisweekawake",{
+    fetch(backend+"/thisweekawake",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -185,7 +192,7 @@ function drawChart() {
 }
 
 function getTodayTopSpeed(){
-    fetch("http://itsovy.sk:1206/weektopspeed",{
+    fetch(backend+"/weektopspeed",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -214,7 +221,7 @@ function getTodayTopSpeed(){
 }
 
 function getBarChart(){
-    fetch("http://itsovy.sk:1206/thisweeklinegraph",{
+    fetch(backend+"/thisweeklinegraph",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -344,7 +351,7 @@ function getUpdateTime(){
                 document.getElementById("updateData").innerHTML="Last data update "+rslt.date;
             };
         }
-    xhttp2.open("GET", "http://itsovy.sk:1206/getupdatetime", true);
+    xhttp2.open("GET", backend+"/getupdatetime", true);
     xhttp2.send();
 }
 

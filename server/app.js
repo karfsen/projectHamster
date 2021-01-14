@@ -2,23 +2,22 @@ var http = require("http");
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const bodyParser = require("body-parser");
 const cors=require('cors');
 const mysql = require('mysql');
 const googleMapsClient = require('@google/maps').createClient({
-  key: YOUR KEY,
+  key: 'AIzaSyAwREM_5iQPb5mxqEYAw_jZEwsV91-YLNs',
   Promise:Promise
 });
 
-app.use(bodyParser.json());
+app.use(require('express').json());
 app.use(cors());
 
 let con=mysql.createConnection({
   host: "localhost",
-  user: "hamster",
-  password: "1605",
+  user: "root",
+  password: "",
   database: "hamster",
-  port: "3307"
+  port: "3306"
 });
 con.connect();
 
@@ -486,6 +485,7 @@ app.post("/getDistance",(req,res,callbackgD)=>{
   callbackgD=function(status,result){
     res.status(status).send(result);
   };
+  console.log(req.body);
 
   let depcity=req.body.departure;
   let descity=req.body.destination;
@@ -615,7 +615,7 @@ app.get("/thismonthlinegraph",(req,res,callbacktlg)=>{
 
   let todaydistance="select day(time) as day,sum(distancecm) as distancecm from data where time between '"+year+"-"+month+"-"+day+" 00:00:00' and '"+year+"-"+month+"-"+lastday+" 00:00:00' group by day(time);";
 
-  //console.log(todaydistance);
+  console.log(todaydistance);
   con.query(todaydistance,(err,res)=>{
     if(err) console.log(err);
     let obj=[];

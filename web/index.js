@@ -1,3 +1,10 @@
+var production=false;
+var backend="";
+if(production){
+    backend="http://itsovy.sk:1206";
+}else{
+    backend="http://localhost:1206";
+}
 /////////////////////////MAIN PAGE/////////////////////////////////////
 /*if(window.innerWidth<768){
     document.getElementsByClassName("s1").style.visibility="hidden";
@@ -32,7 +39,7 @@ const distanceQuotesMT300=[
 ];
 
 
-const socket = io.connect('http://itsovy.sk:1206');
+const socket = io.connect(backend);
 
 refresh();
 var angle=0;
@@ -143,7 +150,7 @@ const convertNotToday = data => {
                 }
             };
         }
-        xhttp2.open("GET", "http://itsovy.sk:1206/todaylinegraph", true);
+        xhttp2.open("GET", backend+"/todaylinegraph", true);
         xhttp2.send();
 
         xhttp.onreadystatechange = function() {
@@ -163,7 +170,7 @@ const convertNotToday = data => {
                 }, 50);
             }
         };
-        xhttp.open("GET", "http://itsovy.sk:1206/yesterdaylinegraph", true);
+        xhttp.open("GET", backend+"/yesterdaylinegraph", true);
         xhttp.send();
     }
 
@@ -241,7 +248,7 @@ const convertNotToday = data => {
                     document.getElementById("time").innerHTML="Last data update "+rslt.date;
                 };
             }
-        xhttp2.open("GET", "http://itsovy.sk:1206/getupdatetime", true);
+        xhttp2.open("GET", backend+"/getupdatetime", true);
         xhttp2.send();
     }
 
@@ -255,7 +262,7 @@ const convertNotToday = data => {
                 document.getElementById("quote1").innerHTML="This can power up your phone on "+Math.round(res.entoday*100/2658*100)/100+"%";
             }
         };
-        xhttp.open("GET", "http://itsovy.sk:1206/energytoday", true);
+        xhttp.open("GET", backend+"/energytoday", true);
         xhttp.send();
     }
 
@@ -282,7 +289,7 @@ const convertNotToday = data => {
                 }
             }
         };
-        xhttp.open("GET", "http://itsovy.sk:1206/distancetoday", true);
+        xhttp.open("GET", backend+"/distancetoday", true);
         xhttp.send();
     }
 

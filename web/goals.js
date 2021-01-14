@@ -1,3 +1,10 @@
+var production=false;
+var backend="";
+if(production){
+    backend="http://itsovy.sk:1206";
+}else{
+    backend="http://localhost:1206";
+}
 showAllGoals();
 chargoalSelected=null;
 let selectedGoal=null;
@@ -211,6 +218,7 @@ let city2;
 function getDistance(){
   city1=document.getElementById("city1").value;
   city2=document.getElementById("city2").value;
+  console.log(city1,city2);
   var xhttp2 = new XMLHttpRequest();
     xhttp2.onreadystatechange = function() {
       if (this.readyState==4 && this.status !== 200) {
@@ -231,7 +239,7 @@ function getDistance(){
         document.getElementsByClassName("googleQuote")[0].innerHTML="Google says it is "+numOfKm+". Hamster has to do "+distance/40+" whell spins to get there. Hit Submit button to begin";
       }
     }
-    xhttp2.open("POST", "http://itsovy.sk:1206/getDistance", true);
+    xhttp2.open("POST", backend+"/getDistance", true);
     xhttp2.setRequestHeader('Content-Type','application/json');
     xhttp2.send(JSON.stringify({departure:city1,destination:city2}));
   //console.log(city1+" "+city2); 
@@ -270,7 +278,7 @@ function submitDistanceGoal(){
       showAllGoals();
     }
   }
-  xhr.open("POST", "http://itsovy.sk:1206/newgoal", true);
+  xhr.open("POST", backend+"/newgoal", true);
   xhr.setRequestHeader('Content-Type','application/json');
   xhr.send(JSON.stringify({type:type,deploc:city1,desloc:city2,distance:distance}));
   //console.log(JSON.stringify({type:type,deploc:city1,desloc:city2,distance:distance}))
@@ -318,9 +326,9 @@ function showAllGoals(){
       }
     }
   }
-  xhr2.open("GET","http://itsovy.sk:1206/showchargoals",true);
+  xhr2.open("GET",backend+"/showchargoals",true);
   xhr2.send();
-  xhr.open("GET", "http://itsovy.sk:1206/showgoals", true);
+  xhr.open("GET", backend+"/showgoals", true);
   xhr.send();
 }
 
@@ -706,7 +714,7 @@ function submitChargeGoal(){
       showAllGoals();
     }
   }
-  xhr.open("POST", "http://itsovy.sk:1206/newchargegoal", true);
+  xhr.open("POST", backend+"/newchargegoal", true);
   xhr.setRequestHeader('Content-Type','application/json');
   if(chargoalSelected==1){
     xhr.send(JSON.stringify({device:"iPhone Xs",amount:2658}));   

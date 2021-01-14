@@ -1,3 +1,10 @@
+var production=false;
+var backend="";
+if(production){
+    backend="http://itsovy.sk:1206";
+}else{
+    backend="http://localhost:1206";
+}
 function refresh(){
     getLineGraph();
     drawChart();
@@ -75,7 +82,7 @@ const convertNotToday = data => {
                 }
             };
         }
-        xhttp2.open("GET", "http://itsovy.sk:1206/todaylinegraph", true);
+        xhttp2.open("GET", backend+"/todaylinegraph", true);
         xhttp2.send();
 
         xhttp.onreadystatechange = function() {
@@ -95,7 +102,7 @@ const convertNotToday = data => {
                 }, 50);
             }
         };
-        xhttp.open("GET", "http://itsovy.sk:1206/yesterdaylinegraph", true);
+        xhttp.open("GET", backend+"/yesterdaylinegraph", true);
         xhttp.send();
     }
 
@@ -146,7 +153,7 @@ const convertNotToday = data => {
 
 function drawChart() {
     let dataset;
-    fetch("http://itsovy.sk:1206/todayawake",{
+    fetch(backend+"/todayawake",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -216,7 +223,7 @@ function drawChart() {
 }
 
 function getTodayTopSpeed(){
-    fetch("http://itsovy.sk:1206/todaytopspeed",{
+    fetch(backend+"/todaytopspeed",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -245,7 +252,7 @@ function getTodayTopSpeed(){
 }
 
 function getBarChart(){
-    fetch("http://itsovy.sk:1206/todaylinegraph",{
+    fetch(backend+"/todaylinegraph",{
         method: 'GET', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -443,7 +450,7 @@ function getUpdateTime(){
                 document.getElementById("updateData").innerHTML="Last data update "+rslt.date;
             };
         }
-    xhttp2.open("GET", "http://itsovy.sk:1206/getupdatetime", true);
+    xhttp2.open("GET", backend+"/getupdatetime", true);
     xhttp2.send();
 }
 
