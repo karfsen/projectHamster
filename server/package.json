@@ -20,9 +20,10 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "mysql": "^2.17.1",
-    "socket.io": "^3.0.4",
-    "socket.io-client": "^3.0.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "socket.io": "^3.1.0",
+    "socket.io-client": "^3.1.0",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {},

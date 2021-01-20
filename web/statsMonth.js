@@ -1,4 +1,4 @@
-var production=false;
+var production=true;
 var backend="";
 if(production){
     backend="http://itsovy.sk:1206";
