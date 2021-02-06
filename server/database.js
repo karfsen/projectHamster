@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 const express = require('express');
-const info = require("./secure-info.json");
+const info = require("./secure-info.js");
 
 let con;
 
@@ -32,7 +32,7 @@ module.exports = {
 
     async saveSpeed(event) {
         let sql = "INSERT INTO speeds values(id,CURRENT_TIMESTAMP," + 0.036 * event.speed + ");";
-        await con.query(sql, (err) => {
+        con.query(sql, (err) => {
             if (err) console.log(err);
             console.log("SpeedData inserted");
         });
@@ -40,7 +40,7 @@ module.exports = {
 
     async saveLastMinuteData(distance) {
         let insertSQL = "INSERT INTO data(distanceCM) values(" + distance + ");";
-        await con.query(insertSQL, (err) => {
+        con.query(insertSQL, (err) => {
             if (err) console.log(err);
             console.log("I have inserted data to database!");
             return 200;
@@ -57,17 +57,17 @@ module.exports = {
 
         let sql = "SELECT sum(distanceCM) as dis from data where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
         //console.log(todaydistance);
-        await con.query(sql, (err, res) => {
+        con.query(sql, (err, res) => {
             if (err) console.log(err);
             if (res[0].dis != null) {
                 let obj = new Object();
                 obj.distancetoday = res[0].dis;
-                return ({ status: 200, data: JSON.stringify(obj) });
+                return { status: 200, data: JSON.stringify(obj) };
             }
             else {
                 let obj = new Object();
                 obj.distancetoday = 0;
-                return ({ status: 200, data: JSON.stringify(obj) });
+                return { status: 200, data: JSON.stringify(obj) };
             }
         });
     },
@@ -84,7 +84,7 @@ module.exports = {
         let sql = "select hour(time) as hour,sum(distancecm) as distancecm from data where time>='" + year + "-" + month + "-" + day + " 00:00:00' group by hour(time);";
 
         //console.log(todaydistance);
-        await con.query(sql, (err, res) => {
+        con.query(sql, (err, res) => {
             if (err) console.log(err);
             let obj = [];
             res.forEach(element => {
@@ -108,7 +108,7 @@ module.exports = {
 
         let todaydistance = "select hour(time) as hour,sum(distancecm) as distancecm from data where time between '" + year + "-" + month + "-" + yesterday + " 00:00:00' and '" + year + "-" + month + "-" + today + " 00:00:00' group by hour(time);";
 
-        await con.query(todaydistance, (err, res) => {
+        con.query(todaydistance, (err, res) => {
             if (err) console.log(err);
             let obj = [];
             res.forEach(element => {
@@ -127,7 +127,7 @@ module.exports = {
         let remaining = data.distance;
 
         let insertSQL = "INSERT INTO DistanceGoals(type,DepLoc,DesLoc,distance,remaining) values(" + type + ",'" + deploc + "','" + desloc + "'," + distance + "," + remaining + ");";
-        await con.query(insertSQL, (err) => {
+        con.query(insertSQL, (err) => {
             if (err) console.log(err);
             console.log("I have inserted new goal to database!");
             return 200;
@@ -137,15 +137,16 @@ module.exports = {
     async getDistanceGoals() {
         let todaydistance = "SELECT id,(DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,DepLoc,DesLoc,distance,remaining from DistanceGoals where done=0";
         //console.log(todaydistance);
-        await con.query(todaydistance, (err, res) => {
+        con.query(todaydistance, (err, res) => {
             if (err) console.log(err);
             return res;
         });
     },
+
     async getChargingGoals() {
         let todaydistance = "SELECT id,device,(DATE_FORMAT(time, '%d.%m.%Y %H:%i')) as time,amount,remaining from ChargeGoals where done=0";
         //console.log(todaydistance);
-        await con.query(todaydistance, (err, res) => {
+        con.query(todaydistance, (err, res) => {
             if (err) console.log(err);
             return res;
         });
@@ -160,7 +161,7 @@ module.exports = {
         if (day < 10) day = "0" + day;
 
         let todayawake = "select count(id) as minutes from data where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
-        await con.query(todayawake, (err, res) => {
+        con.query(todayawake, (err, res) => {
             if (err) console.log(err);
             let hours = new Date().getHours();
             let mins = new Date().getMinutes();
@@ -184,7 +185,7 @@ module.exports = {
         if (day < 10) day = "0" + day;
 
         let todayawake = "select count(id) as minutes from data where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
-        await con.query(todayawake, (err, res) => {
+        con.query(todayawake, (err, res) => {
             if (err) console.log(err);
             let hours = new Date().getHours() + 6 * 24;
             let mins = new Date().getMinutes();
@@ -209,7 +210,7 @@ module.exports = {
         if (day < 10) day = "0" + day;
 
         let todayawake = "select count(id) as minutes from data where time between '" + year + "-" + month + "-" + day + " 00:00:00' and '" + year + "-" + month + "-" + lastday + " 00:00:00';";
-        await con.query(todayawake, (err, res) => {
+        con.query(todayawake, (err, res) => {
             if (err) console.log(err);
             let hours = new Date().getHours() + 31 * 24;
             let mins = new Date().getMinutes();
@@ -233,11 +234,11 @@ module.exports = {
         if (day < 10) day = "0" + day;
 
         let topspeed = "select MAX(speed) as speed from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
-        await con.query(topspeed, async (err, res) => {
+        con.query(topspeed, async (err, res) => {
             if (err) console.log(err);
             let speed = res[0].speed;
             let toptime = "select (DATE_FORMAT(MIN(time), '%H:%i')) as time from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00' and speed=" + speed + ";"
-            await con.query(toptime, (err, res) => {
+            con.query(toptime, (err, res) => {
                 let obj = new Object();
                 obj.speed = speed;
                 obj.time = res[0].time;
@@ -257,11 +258,11 @@ module.exports = {
 
         let topspeed = "select MAX(speed) as speed from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
 
-        await con.query(topspeed, async (err, res) => {
+        con.query(topspeed, async (err, res) => {
             if (err) console.log(err);
             let speed = res[0].speed;
             let toptime = "select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00' and speed=" + speed + ";"
-            await con.query(toptime, (err, res) => {
+            con.query(toptime, (err, res) => {
                 let obj = new Object();
                 obj.speed = speed;
                 obj.time = res[0].time;
@@ -281,11 +282,11 @@ module.exports = {
 
         let topspeed = "select MAX(speed) as speed from speeds where time between '" + year + "-" + month + "-" + day + " 00:00:00' and '" + year + "-" + month + "-" + lastday + " 00:00:00';";
 
-        await con.query(topspeed, async (err, res) => {
+        con.query(topspeed, async (err, res) => {
             if (err) console.log(err);
             let speed = res[0].speed;
             let toptime = "select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time between '" + year + "-" + month + "-" + day + " 00:00:00' and '" + year + "-" + month + "-" + lastday + " 00:00:00' and speed=" + speed + ";";
-            await con.query(toptime, (err, res) => {
+            con.query(toptime, (err, res) => {
                 let obj = new Object();
                 obj.speed = speed;
                 obj.time = res[0].time;
@@ -304,7 +305,7 @@ module.exports = {
 
         let todaydistance = "SELECT distancecm from data where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
 
-        await con.query(todaydistance, (err, res) => {
+        con.query(todaydistance, (err, res) => {
             if (err) console.log(err);
             if (res != null) {
                 let obj = new Object();
@@ -333,7 +334,7 @@ module.exports = {
         let device = req.body.device;
 
         let insertSQL = "INSERT INTO ChargeGoals(device,amount,remaining) values('" + device + "'," + amount + "," + amount + ");";
-        await con.query(insertSQL, (err) => {
+        con.query(insertSQL, (err) => {
             if (err) console.log(err);
             console.log("I have inserted new charge goal to database!");
             return;
@@ -343,7 +344,7 @@ module.exports = {
     async deleteDistanceGoal() {
         let todayawake = "DELETE from DistanceGoals where id=" + req.body.id;
 
-        await con.query(todayawake, (err, res) => {
+        con.query(todayawake, (err, res) => {
             if (err) console.log(err);
             return;
         });
@@ -351,7 +352,7 @@ module.exports = {
 
     async deleteChargingGoal() {
         let todayawake = "DELETE from ChargeGoals where id=" + req.body.id;
-        await con.query(todayawake, (err, res) => {
+        con.query(todayawake, (err, res) => {
             if (err) console.log(err);
             return;
         });
@@ -367,7 +368,7 @@ module.exports = {
 
         let todaydistance = "select day(time) as day,sum(distancecm) as distancecm from data where time>='" + year + "-" + month + "-" + day + " 00:00:00' group by day(time);";
 
-        await con.query(todaydistance, (err, res) => {
+        con.query(todaydistance, (err, res) => {
             if (err) console.log(err);
             let obj = [];
             res.forEach(element => {
@@ -388,7 +389,7 @@ module.exports = {
 
         let todaydistance = "select day(time) as day,sum(distancecm) as distancecm from data where time between '" + year + "-" + month + "-" + day + " 00:00:00' and '" + year + "-" + month + "-" + lastday + " 00:00:00' group by day(time);";
 
-        await con.query(todaydistance, (err, res) => {
+        con.query(todaydistance, (err, res) => {
             if (err) console.log(err);
             let obj = [];
             res.forEach(element => {

@@ -4,7 +4,7 @@ const io = require('socket.io')(server);
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const db = require("./database");
-const info = require("./secure-info.json");
+const info = require("./secure-info");
 const googleMapsClient = require('@google/maps').createClient({
   key: info.key,
   Promise: Promise
@@ -50,12 +50,14 @@ app.get("/senddata", async (req, res) => {
 app.get("/distancetoday", async (req, res) => {
   console.log("Request on /distancetoday");
   let result = await db.getDistanceToday();
+  console.log(result);
   res.status(result.status).send(result.data);
 });
 
 app.get("/todaylinegraph", async (req, res) => {
   console.log("Request on /todaylinegraph");
   let result = await db.todayLineGraph();
+  console.log(result);
   res.status(result.status).send(result.data);
   console.log("Today line graph data sent to the client!");
 });
