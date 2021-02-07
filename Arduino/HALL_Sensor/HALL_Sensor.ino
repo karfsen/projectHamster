@@ -43,7 +43,7 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(SENS, INPUT_PULLUP);
 
-  WiFi.begin("Karfa2","chlapecidehore");
+  WiFi.begin("UPC0684061","pfv8RvhSmsrm");
   digitalWrite(LED_BUILTIN, LOW);
  
   while (WiFi.status() != WL_CONNECTED) 
@@ -57,7 +57,7 @@ void setup()
   lastTimeOfChange = lastTimeOfSend = millis();
   Serial.println("Started");
 
-  webSocket.begin("192.168.31.1", 1206, "/socket.io/?transport=websocket"); 
+  webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket"); 
   webSocket.on("disconnect", onSocketDisconnect);
   webSocket.on("connect", onSocketConnect);
   webSocket.on("speed", onGetSpeed);
@@ -97,7 +97,7 @@ void loop()
     if (ChangeCount > lastChangeCount)
     {
       HTTPClient http;
-      http.begin("192.168.31.1:1206/senddata?distance="+String(ChangeCount));
+      http.begin("http://itsovy.sk:1206/senddata?distance="+String(ChangeCount));
       int res = http.GET();
       String payload = http.getString();
       Serial.print(res); Serial.print(": "); Serial.println(payload);
