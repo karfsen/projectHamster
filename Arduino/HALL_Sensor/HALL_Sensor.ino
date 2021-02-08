@@ -16,7 +16,7 @@ unsigned long int ChangeCount = 0, lastChangeCount = 0, lastChangeDuration = 100
 void onSocketDisconnect(const char *, size_t len)
 {
   Serial.println("Client has disconnected from the server.");
-  webSocket.begin("192.168.31.1", 1206, "/socket.io/?transport=websocket");
+  webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket");
 }
 
 void onSocketConnect(const char *, size_t len)
@@ -97,7 +97,7 @@ void loop()
     if (ChangeCount > lastChangeCount)
     {
       HTTPClient http;
-      http.begin("http://itsovy.sk:1206/senddata?distance="+String(ChangeCount));
+      http.begin("http://194.160.229.181:1206/senddata?distance="+String(ChangeCount));
       int res = http.GET();
       String payload = http.getString();
       Serial.print(res); Serial.print(": "); Serial.println(payload);

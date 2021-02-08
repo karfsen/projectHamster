@@ -41,101 +41,139 @@ io.on('connection', async (client) => {
 });
 /*****************************************End of code for websocket events*****************************************/
 
-app.get("/senddata", async (req, res) => {
+app.get("/senddata", (req, res) => {
   console.log("Request on /senddata");
-  let result = await db.saveLastMinuteData(req.query.distance);
-  res.status(result).send();
+  db.saveLastMinuteData(req.query.distance)
+    .then(() => res.status(200).send())
+    .catch(err => res.status(500).send("Internal server error\n" + err));
 });
 
-app.get("/distancetoday", async (req, res) => {
+app.get("/distancetoday", (req, res) => {
   console.log("Request on /distancetoday");
-  let result = await db.getDistanceToday();
-  console.log(result);
-  res.status(result.status).send(result.data);
+  db.getDistanceToday()
+    .then(result => {
+      console.log(result);
+      res.status(200).send(result.data);
+    })
+    .catch(err => res.status(500).send("Internal server error\n" + err));
 });
 
-app.get("/todaylinegraph", async (req, res) => {
+app.get("/todaylinegraph", (req, res) => {
   console.log("Request on /todaylinegraph");
-  let result = await db.todayLineGraph();
-  console.log(result);
-  res.status(result.status).send(result.data);
-  console.log("Today line graph data sent to the client!");
+  db.todayLineGraph()
+    .then(result => {
+      console.log(result);
+      res.status(result.status).send(result.data);
+      console.log("Today line graph data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error \n" + err));
 });
 
-app.get("/yesterdaylinegraph", async (req, res) => {
+app.get("/yesterdaylinegraph", (req, res) => {
   console.log("Request on /yesterdaylinegraph");
-  let result = await db.yesterdayLineGraph();
-  res.status(result.status).send(result.data);
-  console.log("Yesterday line graph data sent to the client!");
+  db.yesterdayLineGraph()
+    .then(result => {
+      res.status(result.status).send(result.data);
+      console.log("Yesterday line graph data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error \n" + err));
 });
 
-app.post("/newgoal", async (req, res) => {
+app.post("/newgoal", (req, res) => {
   console.log("Request on /newgoal !");
-  let result = await db.newDistanceGoal(req.body);
-  res.status(result).send("New distance goal added successfully");
+  db.newDistanceGoal(req.body)
+    .then(result => res.status(result).send("New distance goal added successfully"))
+    .catch(err => res.status(500).send("Internal Server error \n" + err));
 });
 
-app.get("/showgoals", async (req, res) => {
+app.get("/showgoals", (req, res) => {
   console.log("Request on /showgoals");
-  let result = await db.getDistanceGoals();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getDistanceGoals()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/showchargoals", async (req, res) => {
+app.get("/showchargoals", (req, res) => {
   console.log("Request on /showgoals");
-  let result = await db.getChargingGoals();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getChargingGoals()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/todayawake", async (req, res) => {
+app.get("/todayawake", (req, res) => {
   console.log("Request on /todayawake");
-  let result = await db.getTodayAwake();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getTodayAwake()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/thisweekawake", async (req, res) => {
+app.get("/thisweekawake", (req, res) => {
   console.log("Request on /thisweekawake");
-  let result = await db.getThisWeekAwake();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getThisWeekAwake()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/thismonthawake", async (req, res) => {
+app.get("/thismonthawake", (req, res) => {
   console.log("Request on /thismonthawake");
-  let result = await db.getThisMonthAwake();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getThisMonthAwake()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/todaytopspeed", async (req, res) => {
+app.get("/todaytopspeed", (req, res) => {
   console.log("Request on /todaytopspeed");
-  let result = await db.getTodayTopSpeed();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getTodayTopSpeed()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/weektopspeed", async (req, res) => {
+app.get("/weektopspeed", (req, res) => {
   console.log("Request on /weektopspeed");
-  let result = await db.getWeekTopSpeed();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getWeekTopSpeed()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/monthtopspeed", async (req, res) => {
+app.get("/monthtopspeed", (req, res) => {
   console.log("Request on /monthtopspeed");
-  let result = await db.getMonthTopSpeed();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getMonthTopSpeed()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/energytoday", async (req, res) => {
+app.get("/energytoday", (req, res) => {
   console.log("Request on /energytoday");
-  let result = await db.getEnergyToday();
-  res.status(200).send(result);
-  console.log("Data sent to the client!");
+  db.getEnergyToday()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
 app.get("/getupdatetime", (req, res) => {
@@ -190,38 +228,53 @@ app.post("/getDistance", (req, res, callback) => {
   }, handleDatacb);
 });
 
-app.post("/newchargegoal", async (req, res) => {
+app.post("/newchargegoal", (req, res) => {
   console.log("Request on /newchargegoal !");
-  await db.newChargeGoal();
-  res.status(200).send();
+  db.newChargeGoal(req.body)
+    .then(result => {
+      res.status(200).send();
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.post("/deletegoal", async (req, res) => {
+app.post("/deletegoal", (req, res) => {
   console.log("Request on /deletegoal");
-  await db.deleteDistanceGoal();
-  res.status(200).send();
-  console.log("Data sent to the client!");
+  db.deleteDistanceGoal(req.body.id)
+    .then(() => {
+      res.status(200).send();
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.post("/deletechargoal", async (req, res) => {
+app.post("/deletechargoal", (req, res) => {
   console.log("Request on /deletechargoal");
-  await db.deleteChargingGoal();
-  res.status(200).send();
-  console.log("Data sent to the client!");
+  db.deleteChargingGoal(req.body.id)
+    .then(() => {
+      res.status(200).send();
+      console.log("Data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/thisweeklinegraph", async (req, res) => {
+app.get("/thisweeklinegraph", (req, res) => {
   console.log("Request on /thisweeklinegraph");
-  let result = await db.getThisWeekLineGraph();
-  res.status(200).send(result);
-  console.log("This week data sent to the client!");
+  db.getThisWeekLineGraph()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("This week data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
-app.get("/thismonthlinegraph", async (req, res) => {
+app.get("/thismonthlinegraph", (req, res) => {
   console.log("Request on /thismonthlinegraph");
-  let result = await db.getThisMonthLineGraph();
-  res.status(200).send(result);
-  console.log("This week data sent to the client!");
+  db.getThisMonthLineGraph()
+    .then(result => {
+      res.status(200).send(result);
+      console.log("This week data sent to the client!");
+    })
+    .catch(err => res.status(500).send("Internal Server error\n" + err));
 });
 
 
