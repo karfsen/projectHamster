@@ -1,6 +1,16 @@
 const app = require('express')();
+app.use(bodyParser.json());
+app.use(cors());
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server,{
+    cors: {
+      origin: false,
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true
+    }
+  }
+);
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const db = require("./database");
@@ -9,9 +19,6 @@ const googleMapsClient = require('@google/maps').createClient({
   key: info.key,
   Promise: Promise
 });
-
-app.use(bodyParser.json());
-app.use(cors());
 
 console.log("Server started");
 /*****************************************Code for websocket events*****************************************/
