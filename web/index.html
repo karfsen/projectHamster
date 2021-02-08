@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,13 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="shortcut icon" href="img/hamster.png" />
     <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
     <script src="index.js"></script>
     <title>Project HAMSTER</title>
 </head>
+
 <body>
     <div class="Align">
         <div class="Wrapper">
@@ -28,13 +30,13 @@
                 <div class="Tab">Statistics</div>
             </div>
             <div class="logo" onclick="location.href = './index.html';">
-                <img src="img/group@2x.png" class="Group"  alt="PROJECT HAMSTER"/>
+                <img src="img/group@2x.png" class="Group" alt="PROJECT HAMSTER" />
             </div>
         </div>
         <div class="Wrapper">
             <div class="WhiteBox">
                 <div class="Description">DISTANCE TODAY</div>
-                    <div id="todaydis"></div>
+                <div id="todaydis"></div>
                 <div id="quote"></div>
             </div>
             <div class="WhiteBox2">
@@ -46,12 +48,13 @@
                 <div class="Description">LIVE TEMPO</div>
                 <div class="wheel">
                     <div style="width:80px;">
-                            <svg id="wheelimg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-                                <g fill="none" fill-rule="evenodd">
-                                    <circle cx="40" cy="40" r="39.5" stroke="#979797"/>
-                                    <circle cx="40" cy="70" r="6" fill="#0700FF" transform="matrix(1 0 0 -1 0 140)"/>
-                                </g>
-                            </svg>
+                        <svg id="wheelimg" xmlns="http://www.w3.org/2000/svg" width="80" height="80"
+                            viewBox="0 0 80 80">
+                            <g fill="none" fill-rule="evenodd">
+                                <circle cx="40" cy="40" r="39.5" stroke="#979797" />
+                                <circle cx="40" cy="70" r="6" fill="#0700FF" transform="matrix(1 0 0 -1 0 140)" />
+                            </g>
+                        </svg>
                     </div>
                 </div>
                 <div id="tempo"></div>
@@ -67,4 +70,5 @@
         <div class="CreatedByMe">web by Martin Krendželák, 2019</div>
     </footer>
 </body>
+
 </html>

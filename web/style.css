@@ -1,10 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
 
 
-body{background-color: #f1f1f1;}
+body {
+  background-color: #f1f1f1;
+}
 
 
-#tempo{
+#tempo {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -16,35 +18,36 @@ body{background-color: #f1f1f1;}
   color: #0700ff;
 }
 
-.wheel{
-  display: flex; 
+.wheel {
+  display: flex;
   justify-content: center;
   margin-top: 16px;
   width: 100%;
-  height:60%;
+  height: 60%;
 }
 
-#s1{
+#s1 {
   visibility: visible;
 }
 
-#s2{
+#s2 {
   visibility: visible;
 }
 
-#s2{
+#s2 {
   visibility: visible;
 }
-#burger{
+
+#burger {
   visibility: hidden;
-  width:auto;
-  height:auto;
+  width: auto;
+  height: auto;
   position: fixed;
-  top:8px;
-  left:8px;
+  top: 8px;
+  left: 8px;
 }
 
-#time{
+#time {
   width: 100%;
   height: 11px;
   margin-top: 200px;
@@ -59,7 +62,7 @@ body{background-color: #f1f1f1;}
   color: #666666;
 }
 
-#todaydis{
+#todaydis {
   width: 100%;
   justify-content: center;
   margin-top: 25px;
@@ -75,7 +78,7 @@ body{background-color: #f1f1f1;}
   flex-wrap: wrap;
 }
 
-#todayen{
+#todayen {
   width: 100%;
   justify-content: center;
   margin-top: 25px;
@@ -91,7 +94,7 @@ body{background-color: #f1f1f1;}
   flex-wrap: wrap;
 }
 
-.unit{
+.unit {
   margin-left: 10px;
   margin-top: 15px;
   font-family: 'Roboto', sans-serif;
@@ -104,49 +107,50 @@ body{background-color: #f1f1f1;}
   color: rgba(0, 0, 0, 0.5);
 }
 
-.CreatedBy{
-    margin: 0 auto;
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    width: 100%;
-    height: 7vh;
-    background-color: #000000;
+.CreatedBy {
+  margin: 0 auto;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  height: 7vh;
+  background-color: #000000;
 }
 
-.CreatedByMe{
-    width: auto;
-    margin-top: 3vh;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.5vmin;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: center;
-    color: #666666;
+.CreatedByMe {
+  width: auto;
+  margin-top: 3vh;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5vmin;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #666666;
 }
 
 .Description {
-    margin-left: 16px;
-    margin-top:10px;
-    width: 100%;
-    height: 14px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    color: rgba(0, 0, 0, 0.25);
-  }
+  margin-left: 16px;
+  margin-top: 10px;
+  width: 100%;
+  height: 14px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.25);
+}
 
 @media only screen and (min-width: 1024px) {
 
 
-  #quote,#quote1{
+  #quote,
+  #quote1 {
     justify-content: center;
     width: 100%;
     height: 11px;
@@ -174,9 +178,9 @@ body{background-color: #f1f1f1;}
     letter-spacing: normal;
   }
 
-  .Wrapper{
-    width:auto;
-    height:auto;
+  .Wrapper {
+    width: auto;
+    height: auto;
     margin-left: 40px;
     margin-right: 40px;
     display: flex;
@@ -185,7 +189,7 @@ body{background-color: #f1f1f1;}
 
 
   .active {
-    color:#0700ff;
+    color: #0700ff;
     width: 46px;
     height: 22px;
     margin-right: 16px;
@@ -193,7 +197,7 @@ body{background-color: #f1f1f1;}
   }
 
   .activeStat {
-    color:#0700ff;
+    color: #0700ff;
     width: 46px;
     height: 22px;
     margin-right: 16px;
@@ -220,101 +224,100 @@ body{background-color: #f1f1f1;}
     margin-top: 5px;
     width: 44px;
     height: 2px;
-    background-color:#0700ff;
-}
+    background-color: #0700ff;
+  }
 
-.StatRectangle{
+  .StatRectangle {
     margin-top: 5px;
     width: 64px;
     height: 2px;
-    background-color:#0700ff;
-}
+    background-color: #0700ff;
+  }
 
   .Group {
     width: 199px;
     height: 40px;
     object-fit: contain;
-    }
+  }
 
-   .logo{
+  .logo {
     width: 199px;
     height: 40px;
-    margin-top:10px;
+    margin-top: 10px;
     margin-left: 531px;
-}
+  }
 
-    .graphcontainer{
-        position: relative;
-        width: 900px;
-        height: 170px;
-        margin:24px;
-    }
+  .graphcontainer {
+    position: relative;
+    width: 900px;
+    height: 170px;
+    margin: 24px;
+  }
 
-    .Align{
-        width: 1024px;
-        height: 646px;
-        margin: auto;
-    }
+  .Align {
+    width: 1024px;
+    height: 646px;
+    margin: auto;
+  }
 
-    .WhiteBox {
-        margin-top: 16px;
-        margin-right: 16px;
-        width: 384px;
-        height: 141px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
+  .WhiteBox {
+    margin-top: 16px;
+    margin-right: 16px;
+    width: 384px;
+    height: 141px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
 
-    .WhiteBox2 {
-        margin-top: 16px;
-        margin-right: 16px;
-        width: 384px;
-        height: 141px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
+  .WhiteBox2 {
+    margin-top: 16px;
+    margin-right: 16px;
+    width: 384px;
+    height: 141px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
 
-    .TempoBox{
-        margin-top: 16px;
-        width: 144px;
-        height: 141px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
-    
-    .DistanceBox{
-        margin-top: 16px;
-        width: 944px;
-        height: 217px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-        position: relative;
-    }
+  .TempoBox {
+    margin-top: 16px;
+    width: 144px;
+    height: 141px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
 
-    
+  .DistanceBox {
+    margin-top: 16px;
+    width: 944px;
+    height: 217px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    position: relative;
+  }
 
 }
 
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
 
-  .Align{
+  .Align {
     margin: auto;
   }
 
-  .margin{
+  .margin {
     justify-content: center;
-    margin-left:120px;
+    margin-left: 120px;
     margin-top: 25px;
     display: flex;
     flex-wrap: wrap;
   }
 
-  #quote , #quote1{
+  #quote,
+  #quote1 {
     justify-content: center;
     width: 100%;
     height: 11px;
@@ -342,23 +345,23 @@ body{background-color: #f1f1f1;}
     letter-spacing: normal;
   }
 
-  .Wrapper{
-    width:auto;
-    height:auto;
+  .Wrapper {
+    width: auto;
+    height: auto;
     margin: 24px;
     display: flex;
     flex-wrap: wrap;
   }
 
   .active {
-    color:#0700ff;
+    color: #0700ff;
     width: 46px;
     height: 22px;
     margin-right: 16px;
   }
 
   .activeStat {
-    color:#0700ff;
+    color: #0700ff;
     width: 46px;
     height: 22px;
     margin-right: 16px;
@@ -382,31 +385,31 @@ body{background-color: #f1f1f1;}
     margin-top: 5px;
     width: 44px;
     height: 2px;
-    background-color:#0700ff;
-}
+    background-color: #0700ff;
+  }
 
-.StatRectangle{
+  .StatRectangle {
     margin-top: 5px;
     width: 64px;
     height: 2px;
-    background-color:#0700ff;
-}
+    background-color: #0700ff;
+  }
 
   .Group {
     width: 199px;
     height: 40px;
     object-fit: contain;
-}
+  }
 
-.logo{
+  .logo {
     width: 199px;
     height: 40px;
-    top:10px;
-    right:40px;
+    top: 10px;
+    right: 40px;
     position: fixed;
-}
+  }
 
-.WhiteBox {
+  .WhiteBox {
     margin-top: 16px;
     margin-right: 16px;
     width: 44.7vw;
@@ -414,18 +417,18 @@ body{background-color: #f1f1f1;}
     border-radius: 4px;
     box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
     background-color: #ffffff;
-}
+  }
 
-.WhiteBox2 {
+  .WhiteBox2 {
     margin-top: 16px;
     width: 44.7vw;
     height: 141px;
     border-radius: 4px;
     box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
     background-color: #ffffff;
-}
+  }
 
-.TempoBox{
+  .TempoBox {
     margin-top: 16px;
     margin-right: 16px;
     width: 19.8vw;
@@ -433,164 +436,165 @@ body{background-color: #f1f1f1;}
     border-radius: 4px;
     box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
     background-color: #ffffff;
-}
+  }
 
-.DistanceBox{
+  .DistanceBox {
     margin-top: 16px;
     width: 69.6vw;
     height: 205px;
     border-radius: 4px;
     box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
     background-color: #ffffff;
-}
+  }
 
 }
 
 @media only screen and (min-width:320px) and (max-width: 767px) {
 
-    #burger{
-      display: none;
-      width:auto;
-      height:auto;
-      margin: 8px;
-    }
-
-    .margin{
-      justify-content: center;
-      margin-left:120px;
-      margin-top: 25px;
-      display: flex;
-      flex-wrap: wrap;
-    }
-  
-    #quote,#quote1{
-      justify-content: center;
-      width: 100%;
-      height: 11px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 10px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: center;
-      color: #000000;
-    }
-
-    .Tab {
-      cursor: default;
-        width: auto;
-        height: auto;
-        font-family: 'Roboto', sans-serif;
-        font-size: 14px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-    }
-
-    .Wrapper{
-        width:auto;
-        height:auto;
-        margin: 8px;
-    }
-
-    .active {
-        color:#0700ff;
-        width: 46px;
-        height: 22px;
-        margin-right: 16px;
-        margin-top: 24px;
-    }
-
-    .activeStat {
-        color:#0700ff;
-        width: 46px;
-        height: 22px;
-        margin-right: 16px;
-        margin-top: 24px;
-    }
-
-    .inactive {
-        width: 46px;
-        height: 22px;
-        color: rgba(0, 0, 0, 0.5);
-        margin-right: 16px;
-        margin-top: 24px;
-    }
-
-    .inactiveStat {
-        width: 74px;
-        height: 22px;
-        color: rgba(0, 0, 0, 0.5);
-        margin-right: 16px;
-        margin-top: 24px;
-    }
-
-    .Rectangle {
-      margin-top: 5px;
-      width: 44px;
-      height: 2px;
-      background-color:#0700ff;
+  #burger {
+    display: none;
+    width: auto;
+    height: auto;
+    margin: 8px;
   }
 
-  .StatRectangle{
-      margin-top: 5px;
-      width: 64px;
-      height: 2px;
-      background-color:#0700ff;
+  .margin {
+    justify-content: center;
+    margin-left: 120px;
+    margin-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
   }
 
-    .Group {
-      width: 199px;
-      height: 40px;
-      object-fit: contain;
-    }
+  #quote,
+  #quote1 {
+    justify-content: center;
+    width: 100%;
+    height: 11px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #000000;
+  }
 
-   .logo{
-        width: 199px;
-        height: 40px;
-        top: 12px;
-        right:8px;
-        position: fixed;
-    }
+  .Tab {
+    cursor: default;
+    width: auto;
+    height: auto;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+  }
 
-    .WhiteBox {
-        margin-top: 8px;
-        width: auto;
-        height: 141px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
+  .Wrapper {
+    width: auto;
+    height: auto;
+    margin: 8px;
+  }
 
-    .WhiteBox2 {
-        margin-top: 8px;
-        width: auto;
-        height: 141px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
+  .active {
+    color: #0700ff;
+    width: 46px;
+    height: 22px;
+    margin-right: 16px;
+    margin-top: 24px;
+  }
 
-    .TempoBox{
-        margin-top: 8px;
-        width: auto;
-        height: 141px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
+  .activeStat {
+    color: #0700ff;
+    width: 46px;
+    height: 22px;
+    margin-right: 16px;
+    margin-top: 24px;
+  }
 
-    .DistanceBox{
-        margin-top: 8px;
-        width: auto;
-        height: 217px;
-        border-radius: 4px;
-        box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
-        background-color: #ffffff;
-    }
+  .inactive {
+    width: 46px;
+    height: 22px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-right: 16px;
+    margin-top: 24px;
+  }
+
+  .inactiveStat {
+    width: 74px;
+    height: 22px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-right: 16px;
+    margin-top: 24px;
+  }
+
+  .Rectangle {
+    margin-top: 5px;
+    width: 44px;
+    height: 2px;
+    background-color: #0700ff;
+  }
+
+  .StatRectangle {
+    margin-top: 5px;
+    width: 64px;
+    height: 2px;
+    background-color: #0700ff;
+  }
+
+  .Group {
+    width: 199px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .logo {
+    width: 199px;
+    height: 40px;
+    top: 12px;
+    right: 8px;
+    position: fixed;
+  }
+
+  .WhiteBox {
+    margin-top: 8px;
+    width: auto;
+    height: 141px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
+
+  .WhiteBox2 {
+    margin-top: 8px;
+    width: auto;
+    height: 141px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
+
+  .TempoBox {
+    margin-top: 8px;
+    width: auto;
+    height: 141px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
+
+  .DistanceBox {
+    margin-top: 8px;
+    width: auto;
+    height: 217px;
+    border-radius: 4px;
+    box-shadow: 0 2px 27px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+  }
 
 }

@@ -151,7 +151,9 @@ app.get("/getupdatetime", (req, res) => {
   let hour = new Date().getHours();
   let minute = new Date().getMinutes();
 
-  res.status(200).send(JSON.stringify({ date: hour + ":" + minute + " " + day + ". " + month + " " + year }));
+  res.status(200).send(JSON.stringify({
+    date: hour + ":" + minute + " " + day + ". " + month + " " + year
+  }));
 });
 
 app.post("/getDistance", (req, res, callback) => {
@@ -176,12 +178,16 @@ app.post("/getDistance", (req, res, callback) => {
       obj.destinCity = descity;
       obj.info = info;
       callback(200, JSON.stringify(obj));
-    }
-    else {
-      callback(403, JSON.stringify({ message: "These cities are unable to connect with distance matrix!" }));
+    } else {
+      callback(403, JSON.stringify({
+        message: "These cities are unable to connect with distance matrix!"
+      }));
     }
   }
-  googleMapsClient.distanceMatrix({ origins: [depcity], destinations: [descity] }, handleDatacb);
+  googleMapsClient.distanceMatrix({
+    origins: [depcity],
+    destinations: [descity]
+  }, handleDatacb);
 });
 
 app.post("/newchargegoal", async (req, res) => {
