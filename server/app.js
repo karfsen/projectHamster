@@ -1,18 +1,17 @@
 const app = require('express')();
+const bodyParser = require("body-parser");
+const cors = require('cors');
 app.use(bodyParser.json());
 app.use(cors());
 const server = require('http').createServer(app);
 const io = require('socket.io')(server,{
-    cors: {
-      origin: false,
-      methods: ["GET", "POST"],
-      allowedHeaders: ["my-custom-header"],
-      credentials: true
-    }
+  cors:{
+    origin: "http://itsovy.sk",
+    methods: ["GET"],
+    credentials:true
   }
-);
-const bodyParser = require("body-parser");
-const cors = require('cors');
+});
+
 const db = require("./database");
 const info = require("./secure-info");
 const googleMapsClient = require('@google/maps').createClient({
@@ -23,8 +22,8 @@ const googleMapsClient = require('@google/maps').createClient({
 console.log("Server started");
 /*****************************************Code for websocket events*****************************************/
 //Getting connections of client
-io.on('connection', async (client) => {
-
+io.on('connection', (client) => {
+  
   console.log("Client connected");
   //Webpage sends event "getdata" to the server  
   client.on('getdata', () => {
@@ -34,12 +33,14 @@ io.on('connection', async (client) => {
   });
   //Arduino sends event "speedJson" to the server
   client.on('speedJson', (event) => {
-    //console.log(event);
     console.log("Arduino sent data,sending to WebClient...");
-    if (event.speed > 0 && event.speed <= 100) {
+    if (event.speed >= 0 && event.speed <= 100) {
       db.saveSpeed(event);
+      io.emit('data', event);
+    }else {
+      db.saveSpeed({speed:100});
+      io.emit("data",{"speed":"100"});
     }
-    io.emit('data', event);
   });
 
   client.on('disconnect', () => {
@@ -49,7 +50,7 @@ io.on('connection', async (client) => {
 /*****************************************End of code for websocket events*****************************************/
 
 app.get("/senddata", (req, res) => {
-  console.log("Request on /senddata");
+  console.log("Request on /senddata "+req.query.distance);
   db.saveLastMinuteData(req.query.distance)
     .then(() => res.status(200).send())
     .catch(err => res.status(500).send("Internal server error\n" + err));
