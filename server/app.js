@@ -34,7 +34,7 @@ io.on('connection', (client) => {
   //Arduino sends event "speedJson" to the server
   client.on('speedJson', (event) => {
     console.log("Arduino sent data,sending to WebClient...");
-    if (event.speed >= 0 && event.speed <= 100) {
+    if (event.speed > 0 && event.speed <= 100) {
       db.saveSpeed(event);
       io.emit('data', event);
     }else {
