@@ -4,19 +4,22 @@
 
 #define SENS 4
 
+const char IP[] = "194.160.229.181";
+const int port = 1206;
+
 unsigned long int lastTimeOfChange = 0;
 unsigned long int lastTimeOfSend = 0;
 unsigned long int minTimeOfChange = 1000000;
 
 SocketIoClient webSocket;
 
-int State = 0;  
+int oldState = 0;
 unsigned long int ChangeCount = 0, lastChangeCount = 0, lastChangeDuration = 100000;
 
 void onSocketDisconnect(const char *, size_t len)
 {
   Serial.println("Client has disconnected from the server.");
-  webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket");
+  webSocket.begin(IP, port,"/socket.io/?transport=websocket");
 }
 
 void onSocketConnect(const char *, size_t len)
@@ -26,27 +29,26 @@ void onSocketConnect(const char *, size_t len)
 
 void onGetSpeed(const char *, size_t len)
 {
-  float dlzkaImpulzu_cm = 20;
+  //Serial.print("tu som v tej kokotskejfunkcii ktora nefunguje dopici");
+  float dlzkaImpulzu_cm = 16;
   float casImpulzu_sec = (float)lastChangeDuration / 1000.0;
   float speed_cm_per_sec = dlzkaImpulzu_cm / casImpulzu_sec;
-//  float speed_kmh = speed_m_per_sec * 3.6;
-
+  //  float speed_kmh = speed_m_per_sec * 3.6;
   String json = "{ \"speed\": \"" + String((int)speed_cm_per_sec) + "\" }";
-
   webSocket.emit("speedJson", json.c_str());
   Serial.printf("\nGetSpeed: %s\n", json.c_str());
 }
 
-void setup() 
+void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(SENS, INPUT_PULLUP);
 
-  WiFi.begin("UPC0684061","pfv8RvhSmsrm");
+  WiFi.begin("UPC0684061", "pfv8RvhSmsrm");
   digitalWrite(LED_BUILTIN, LOW);
- 
-  while (WiFi.status() != WL_CONNECTED) 
+
+  while (WiFi.status() != WL_CONNECTED)
   {
     Serial.println("Waiting for WiFi...");
     delay(1000);
@@ -57,53 +59,69 @@ void setup()
   lastTimeOfChange = lastTimeOfSend = millis();
   Serial.println("Started");
 
-  webSocket.begin("194.160.229.181", 1206, "/socket.io/?transport=websocket"); 
+  webSocket.begin(IP, port,"/socket.io/?&transport=websocket");
   webSocket.on("disconnect", onSocketDisconnect);
   webSocket.on("connect", onSocketConnect);
   webSocket.on("speed", onGetSpeed);
 }
 
-void loop() 
+void loop()
 {
   unsigned long int cas = millis();
   int newState = 0;
 
-//  Serial.printf("Sens_1 = %d, Sens_2 = %d\n", digitalRead(SENS1), digitalRead(SENS2));
-  
-  if (digitalRead(SENS) == LOW) newState = 1;
+  //Serial.printf("Sens is %d \n", digitalRead(SENS));
+  if(digitalRead(SENS) == LOW) newState = 1;
  
+  if ((cas - lastTimeOfChange) < 100)
+  {
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+  else
+  {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+
   if (newState == 1)
   {
-    if (State != newState)
+    if (oldState != newState)
     {
       lastChangeDuration = cas - lastTimeOfChange;
-      if ((State > 0) && (lastChangeDuration < minTimeOfChange)) minTimeOfChange = lastChangeDuration;
+      if ((oldState == 1) && (lastChangeDuration < minTimeOfChange))
+        minTimeOfChange = lastChangeDuration;
       lastTimeOfChange = cas;
       ChangeCount++;
       Serial.printf("State %d [%d] <cur: %d, min: %d>\n", newState, (int)ChangeCount, (int)lastChangeDuration, (int)minTimeOfChange);
-      State = newState;
+      oldState = newState;
       onGetSpeed(NULL, 0);
+    }
+    else{
+      oldState = 0;  
     }
   }
   else
   {
-    if ((cas - lastTimeOfChange) > lastChangeDuration) lastChangeDuration = cas - lastTimeOfChange;
-    if (lastChangeDuration > 2000) lastChangeDuration = 100000;
+    if ((cas - lastTimeOfChange) > lastChangeDuration)
+      lastChangeDuration = cas - lastTimeOfChange;
+    if (lastChangeDuration > 2000)
+      lastChangeDuration = 100000;
   }
- 
+
   if ((cas - lastTimeOfSend) > 60000)
   {
     digitalWrite(LED_BUILTIN, LOW);
     if (ChangeCount > lastChangeCount)
     {
       HTTPClient http;
-      http.begin("http://194.160.229.181:1206/senddata?distance="+String(ChangeCount));
+      http.begin("http://itsovy.sk:1206/senddata?distance=" + String(ChangeCount));
       int res = http.GET();
       String payload = http.getString();
-      Serial.print(res); Serial.print(": "); Serial.println(payload);
+      Serial.print(res);
+      Serial.print(": ");
+      Serial.println(payload);
     }
- 
-    digitalWrite(LED_BUILTIN, HIGH);      
+
+    digitalWrite(LED_BUILTIN, HIGH);
     lastTimeOfSend = cas;
     lastChangeCount = ChangeCount;
     minTimeOfChange = 100000;
