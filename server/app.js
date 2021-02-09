@@ -7,8 +7,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server,{
   cors:{
     origin: "http://itsovy.sk",
-    methods: ["GET"],
-    credentials:true
+    methods: ["GET", "POST"],
   }
 });
 
@@ -34,7 +33,7 @@ io.on('connection', (client) => {
   //Arduino sends event "speedJson" to the server
   client.on('speedJson', (event) => {
     console.log("Arduino sent data,sending to WebClient...");
-    if (event.speed > 0 && event.speed <= 100) {
+    if (event.speed >= 0 && event.speed <= 100) {
       db.saveSpeed(event);
       io.emit('data', event);
     }else {
