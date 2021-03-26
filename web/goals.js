@@ -218,7 +218,7 @@ let city2;
 function getDistance(){
   city1=document.getElementById("city1").value;
   city2=document.getElementById("city2").value;
-  console.log(city1,city2);
+  //console.log(city1,city2);
   var xhttp2 = new XMLHttpRequest();
     xhttp2.onreadystatechange = function() {
       if (this.readyState==4 && this.status !== 200) {

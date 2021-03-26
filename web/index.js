@@ -57,9 +57,7 @@ function countdown() {
 
 socket.on('connect', (data) => {
     console.log('check', socket.connected);
-    //socket.emit('weatherData');
     socket.emit('getdata');
-    console.log(data);
 });
 socket.on('data', (data) => {
     console.log(data);

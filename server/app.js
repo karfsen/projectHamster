@@ -4,8 +4,8 @@ const cors = require('cors');
 app.use(bodyParser.json());
 app.use(cors());
 const server = require('http').createServer(app);
-const io = require('socket.io')(server,{
-  cors:{
+const io = require('socket.io')(server, {
+  cors: {
     origin: "http://itsovy.sk",
     methods: ["GET", "POST"],
   }
@@ -13,16 +13,18 @@ const io = require('socket.io')(server,{
 
 const db = require("./database");
 const info = require("./secure-info");
-const googleMapsClient = require('@google/maps').createClient({
-  key: info.key,
-  Promise: Promise
-});
+var distance = require('google-distance-matrix');
+distance.key(info.key)
+// const googleMapsClient = require('@google/maps').createClient({
+//   key: info.key,
+//   Promise: Promise
+// });
 
 console.log("Server started");
 /*****************************************Code for websocket events*****************************************/
 //Getting connections of client
 io.on('connection', (client) => {
-  
+
   console.log("Client connected");
   //Webpage sends event "getdata" to the server  
   client.on('getdata', () => {
@@ -36,9 +38,9 @@ io.on('connection', (client) => {
     if (event.speed >= 0 && event.speed <= 100) {
       db.saveSpeed(event);
       io.emit('data', event);
-    }else {
-      db.saveSpeed({speed:100});
-      io.emit("data",{"speed":"100"});
+    } else {
+      db.saveSpeed({ speed: 100 });
+      io.emit("data", { "speed": "100" });
     }
   });
 
@@ -49,7 +51,7 @@ io.on('connection', (client) => {
 /*****************************************End of code for websocket events*****************************************/
 
 app.get("/senddata", (req, res) => {
-  console.log("Request on /senddata "+req.query.distance);
+  console.log("Request on /senddata " + req.query.distance);
   db.saveLastMinuteData(req.query.distance)
     .then(() => res.status(200).send())
     .catch(err => res.status(500).send("Internal server error\n" + err));
@@ -209,30 +211,40 @@ app.post("/getDistance", (req, res, callback) => {
 
   let depcity = req.body.departure;
   let descity = req.body.destination;
+  var origins = [depcity];
+  var destinations = [descity];
 
-  console.log(depcity + " " + descity);
-
-  function handleDatacb(response, status) {
-    if (status.json.rows[0].elements[0].status !== "ZERO_RESULTS") {
-      let descity = status.json.destination_addresses[0];
-      let depcity = status.json.origin_addresses[0];
-      let info = status.json.rows[0].elements[0].distance;
-
-      let obj = new Object();
-      obj.departCity = depcity;
-      obj.destinCity = descity;
-      obj.info = info;
-      callback(200, JSON.stringify(obj));
-    } else {
-      callback(403, JSON.stringify({
-        message: "These cities are unable to connect with distance matrix!"
-      }));
+  distance.matrix(origins, destinations, (err, distances) => {
+    if (err) {
+      callback(500, "Internal server error.");
+      return;
     }
-  }
-  googleMapsClient.distanceMatrix({
-    origins: [depcity],
-    destinations: [descity]
-  }, handleDatacb);
+
+    if (!distances) {
+      callback(404, "No distance found.");
+      console.log('no distances');
+      return;
+    }
+
+    if (distances.status == 'OK') {
+      var origin = distances.origin_addresses[0];
+      console.log(distances.rows[0].elements[0]);
+      var destination = distances.destination_addresses[0];
+      if (distances.rows[0].elements[0].status == 'OK') {
+        var distance = distances.rows[0].elements[0].distance;
+        console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
+        let obj = new Object();
+        obj.departCity = origin;
+        obj.destinCity = destination;
+        obj.info = distance;
+        console.log(obj)
+        callback(200, JSON.stringify(obj));
+      } else {
+        console.log(destination + ' is not reachable by land from ' + origin);
+        callback(403, "Cannot connect this two places by land");
+      }
+    }
+  });
 });
 
 app.post("/newchargegoal", (req, res) => {

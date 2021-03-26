@@ -127,17 +127,16 @@ module.exports = {
 
     newDistanceGoal(data) {
         return new Promise((resolve, reject) => {
-            let type = data.type;
             let deploc = data.deploc;
             let desloc = data.desloc;
             let distance = data.distance;
             let remaining = data.distance;
 
-            let insertSQL = "INSERT INTO DistanceGoals(type,DepLoc,DesLoc,distance,remaining) values(" + type + ",'" + deploc + "','" + desloc + "'," + distance + "," + remaining + ");";
+            let insertSQL = "INSERT INTO DistanceGoals(DepLoc,DesLoc,distance,remaining) values('" + deploc + "','" + desloc + "'," + distance + "," + remaining + ");";
             con.query(insertSQL, (err) => {
                 if (err) reject(err);
                 console.log("I have inserted new goal to database!");
-                resolve();
+                resolve(200);
             });
         });
     },
@@ -195,12 +194,12 @@ module.exports = {
             let month = new Date().getMonth() + 1;
             let year = new Date().getFullYear();
 
-            if(day < 1){
+            if (day < 1) {
                 month--;
-                var days = function(month,year) {
+                var days = function (month, year) {
                     return new Date(year, month, 0).getDate();
                 };
-                day = days(month,year);
+                day = days(month, year);
             }
             if (month < 10) month = "0" + month;
             if (day < 10) day = "0" + day;
@@ -208,7 +207,7 @@ module.exports = {
             let todayawake = "select count(id) as minutes from data where time >='" + year + "-" + month + "-" + day + " 00:00:00';";
             con.query(todayawake, (err, res) => {
                 if (err) reject(err);
-                let hours = new Date().getHours() + 6 * 24;
+                let hours = new Date().getHours() + 7 * 24;
                 let mins = new Date().getMinutes();
                 let summins = (hours * 60) + mins;
                 let obj = new Object();
@@ -224,9 +223,9 @@ module.exports = {
     getThisMonthAwake() {
         return new Promise((resolve, reject) => {
             let day = "01";
-            let lastday = 31;
             let month = new Date().getMonth() + 1;
             let year = new Date().getFullYear();
+            let lastday =new Date(year, month, 0).getDate();
 
             if (month < 10) month = "0" + month;
             if (day < 10) day = "0" + day;
@@ -260,7 +259,7 @@ module.exports = {
             con.query(topspeed, async (err, res) => {
                 if (err) reject(err);
                 let speed = res[0].speed;
-                let toptime = "select (DATE_FORMAT(MIN(time), '%H:%i')) as time from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00' and speed=" + speed + ";"
+                let toptime = "select (DATE_FORMAT(MIN(time), '%H:%i')) as time from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00' and speed LIKE " + speed + ";"
                 con.query(toptime, (err, res) => {
                     let obj = new Object();
                     obj.speed = speed;
@@ -276,13 +275,13 @@ module.exports = {
             let day = new Date().getDate() - 7;
             let month = new Date().getMonth() + 1;
             let year = new Date().getFullYear();
-            
-            if(day < 1){
+
+            if (day < 1) {
                 month--;
-                var days = function(month,year) {
+                var days = function (month, year) {
                     return new Date(year, month, 0).getDate();
                 };
-                day = days(month,year);
+                day = days(month, year);
             }
             if (month < 10) month = "0" + month;
             if (day < 10) day = "0" + day;
@@ -292,7 +291,7 @@ module.exports = {
             con.query(topspeed, async (err, res) => {
                 if (err) reject(err);
                 let speed = res[0].speed;
-                let toptime = "select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00' and speed=" + speed + ";"
+                let toptime = "select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time >='" + year + "-" + month + "-" + day + " 00:00:00' and speed like " + speed + ";"
                 con.query(toptime, (err, res) => {
                     let obj = new Object();
                     obj.speed = speed;
@@ -318,7 +317,7 @@ module.exports = {
             con.query(topspeed, async (err, res) => {
                 if (err) reject(err);
                 let speed = res[0].speed;
-                let toptime = "select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time between '" + year + "-" + month + "-" + day + " 00:00:00' and '" + year + "-" + month + "-" + lastday + " 00:00:00' and speed=" + speed + ";";
+                let toptime = "select (DATE_FORMAT(MIN(time), '%d.%m.%Y %H:%i')) as time from speeds where time between '" + year + "-" + month + "-" + day + " 00:00:00' and '" + year + "-" + month + "-" + lastday + " 00:00:00' and speed LIKE " + speed + ";";
                 con.query(toptime, (err, res) => {
                     let obj = new Object();
                     obj.speed = speed;
@@ -402,16 +401,16 @@ module.exports = {
 
     getThisWeekLineGraph() {
         return new Promise((resolve, reject) => {
-            let day = new Date().getDate() - 7;
+            let day = new Date().getDate() - 6;
             let month = new Date().getMonth() + 1;
             let year = new Date().getFullYear();
 
-            if(day < 1){
+            if (day < 1) {
                 month--;
-                var days = function(month,year) {
+                var days = function (month, year) {
                     return new Date(year, month, 0).getDate();
                 };
-                day = days(month,year);
+                day = days(month, year);
             }
             if (month < 10) month = "0" + month;
             if (day < 10) day = "0" + day;
@@ -433,17 +432,11 @@ module.exports = {
     getThisMonthLineGraph() {
         return new Promise((resolve, reject) => {
             let day = "01";
-            let lastday = 31;
             let month = new Date().getMonth() + 1;
             let year = new Date().getFullYear();
 
-            if(day < 1){
-                month--;
-                var days = function(month,year) {
-                    return new Date(year, month, 0).getDate();
-                };
-                day = days(month,year);
-            }
+            let lastday =new Date(year, month, 0).getDate();
+            
             if (month < 10) month = "0" + month;
             if (day < 10) day = "0" + day;
 
