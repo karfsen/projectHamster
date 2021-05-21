@@ -1,10 +1,5 @@
-var production=true;
-var backend="";
-if(production){
-    backend="http://itsovy.sk:1206";
-}else{
-    backend="http://localhost:1206";
-}
+var backend = "http://itsovy.sk:1206";
+
 showAllGoals();
 chargoalSelected=null;
 let selectedGoal=null;

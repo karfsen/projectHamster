@@ -1,10 +1,4 @@
-var production = true;
-var backend = "";
-if (production) {
-    backend = "http://itsovy.sk:1206";
-} else {
-    backend = "http://localhost:1206";
-}
+var backend = "http://itsovy.sk:1206";
 
 let todayDateDay = new Date().getDate();
 function refresh() {
@@ -18,33 +12,19 @@ function refresh() {
 }
 refresh();
 
-const convert = data =>
-    data.reduce((acc, curr, index) => {
-        let distanceSum = 0;
-        for (const o in data) {
-            distanceSum += data[o].distance;
-            if (data[o].day === curr.day) {
-                break;
-            }
-        }
-        let countOfValuesToAdd = 1;
-        if (index + 1 !== data.length)
-            countOfValuesToAdd = data[index + 1].day - data[index].day;
-        let toAdd = [];
-        for (var i = 0; i < countOfValuesToAdd; i++) toAdd.push(distanceSum);
-
-        return [...acc, ...toAdd];
-    }, []);
-
-const convertToday = data => {
-    let hour = todayDateDay;
-    const converted = convert(data);
-    const valueToAdd = converted[converted.length - 1];
-    let arrToAdd = [];
-    for (var i = 0; i < hour - data[data.length - 1].day; i++) {
-        arrToAdd.push(valueToAdd);
+const convertToday = (data) => {
+    let array =[];
+    let firstDay = todayDateDay - 6;
+    for (i = 0; i < 7; i++) {
+        array.push(0);
     }
-    return [...converted, ...arrToAdd];
+    let total = 0;
+    data.forEach(element => {  
+    	total+=element.distance;
+        array[element.day-firstDay-1] = total;
+    });
+    console.log(array)
+    return array;
 }
 
 
@@ -57,7 +37,6 @@ function getLineGraph() {
             if (this.responseText != JSON.stringify([])) {
                 result2 = convertToday(JSON.parse(this.responseText));
                 renderGraph1(result2);
-
             }
             else {
                 result2 = convertToday([{ hour: 0, distance: 0 }]);
@@ -364,6 +343,7 @@ const convertBarWeek = (data) => {
 
 const convertActivityWeek = (data) => {
     let array =[];
+    let firstDay = todayDateDay - 6;
     for (i = 0; i < 7; i++) {
         array.push(0);
     }

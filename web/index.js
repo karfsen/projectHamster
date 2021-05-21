@@ -1,10 +1,5 @@
-var production = true;
-var backend = "";
-if (production) {
-    backend = "http://itsovy.sk:1206";
-} else {
-    backend = "http://localhost:1206";
-}
+var backend = "http://itsovy.sk:1206";
+
 /////////////////////////MAIN PAGE/////////////////////////////////////
 /*if(window.innerWidth<768){
     document.getElementsByClassName("s1").style.visibility="hidden";

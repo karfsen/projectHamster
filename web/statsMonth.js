@@ -1,10 +1,5 @@
-var production = true;
-var backend = "";
-if (production) {
-    backend = "http://itsovy.sk:1206";
-} else {
-    backend = "http://localhost:1206";
-}
+var backend = "http://itsovy.sk:1206";
+
 let monthDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
 function refresh() {
     getLineGraph();
