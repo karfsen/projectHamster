@@ -8,3 +8,4 @@ If you want to run this project-
 4. you must run backend with command node app.js(on server I suggest to run screen nodemon app.js to be able to attach to process to see logs)
 5. if you want the distance goals functionality, you need to put on your own API key from google distance matrix api(if you are new here you can actually have free trial)
 6. you need to setup your arduino 
+7. that should be all , if you need any help contact me anytime on my github or 
